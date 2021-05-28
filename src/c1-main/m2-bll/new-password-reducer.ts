@@ -4,5 +4,7 @@ export const newPasswordReducer = (state: any = initialState, action: any) => {
         case '': {
             return state;
         }
+        default:
+            return state;
     }
 };

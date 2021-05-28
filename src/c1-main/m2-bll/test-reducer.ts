@@ -4,5 +4,7 @@ export const testReducer = (state: any = initialState, action: any) => {
         case '': {
             return state;
         }
+        default:
+            return state;
     }
 };
