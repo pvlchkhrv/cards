@@ -1,10 +1,11 @@
-import {combineReducers, createStore} from 'redux';
+import {applyMiddleware, combineReducers, createStore} from 'redux';
 import {loginReducer} from './login-reducer';
 import {registerReducer} from './register-reducer';
 import {profileReducer} from './profile-reducer';
 import {restorePasswordReducer} from './restore-password-reducer';
 import {newPasswordReducer} from './new-password-reducer';
 import {testReducer} from './test-reducer';
+import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
     login: loginReducer,
@@ -15,7 +16,7 @@ const rootReducer = combineReducers({
     test: testReducer
 });
 
-export const store = createStore(rootReducer);
+export const store = createStore(rootReducer, applyMiddleware(thunk));
 // @ts-ignore
 window.store = store;
 
