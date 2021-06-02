@@ -12,13 +12,10 @@ export type LoginParametersType = {
 }
 
 export const authAPI = {
-    getAuth() {
-      return inctance.post('auth/me')
-    },
     login(parameters: LoginParametersType) {
         return inctance.post('auth/login', parameters)
     },
     logout() {
-        return inctance.delete('auth/login')
+        return inctance.delete('auth/me')
     }
 }

@@ -32,11 +32,11 @@ type ActionsType =
 
 export const loginReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
-        case 'SET_USER_DATA': {
+        case SET_USER_DATA: {
             return {
                 ...state,
                 user: action.payload,
-                isAuth: true
+                isAuth: true            //isAuth: must not be
             };
         }
         default:
@@ -45,10 +45,10 @@ export const loginReducer = (state: InitialStateType = initialState, action: Act
 };
 
 // ACs
-export const setAuthUserDataAC = (payload: InitialStateType) => ({type: 'SET_USER_DATA', payload}) as const;
+export const setAuthUserDataAC = (payload: InitialStateType) => ({type: SET_USER_DATA, payload}) as const;
 
 // Thunks
-export const getAuthUserData = (parameters: LoginParametersType) => (dispatch: Dispatch) => {
+export const getAuthUserData = (parameters: LoginParametersType) => (dispatch: Dispatch<ActionsType>) => {
     authAPI.login(parameters)
         .then(res => {
             dispatch(setAuthUserDataAC(res.data))
