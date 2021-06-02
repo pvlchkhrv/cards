@@ -1,11 +1,11 @@
 import React from 'react';
 import LoginContainer from "./LoginContainer";
 
-type LogInPagePropsType = {
+type LoginPagePropsType = {
 
 }
 
-const LoginPage: React.FC<LogInPagePropsType> = (props: any) => {
+const LoginPage: React.FC<LoginPagePropsType> = () => {
     return (
         <div>
             <LoginContainer/>
