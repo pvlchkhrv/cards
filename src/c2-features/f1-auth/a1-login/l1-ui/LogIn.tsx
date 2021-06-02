@@ -4,7 +4,7 @@ type LoginPropsType = {
 
 }
 
-const Login: React.FC<LoginPropsType> = (props: any) => {
+const LogIn: React.FC<LoginPropsType> = (props: any) => {
     return (
         <div>
             LOGIN PAGE
@@ -12,4 +12,4 @@ const Login: React.FC<LoginPropsType> = (props: any) => {
     )
 }
 
-export default Login;
+export default LogIn;

@@ -16,7 +16,6 @@ export const PATH = {
     RESTORE_PASSWORD: '/restore-password',
     SET_NEW_PASSWORD: '/set-new-password',
     TEST:'/test'
-
 }
 
 export const Routes: React.FC = () => {
@@ -33,7 +32,7 @@ export const Routes: React.FC = () => {
                 <Route render={() => <Error404/>}/>
 
             </Switch>
-        </div>
+        </div>  
     )
 }
 
