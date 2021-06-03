@@ -51,10 +51,12 @@ export const setAuthUserDataAC = (payload: InitialStateType) => ({type: SET_USER
 export const getAuthUserData = (email: string, password: string, rememberMe: boolean) => (dispatch: Dispatch<ActionsType>) => {
     authAPI.login(email, password, rememberMe)
         .then(res => {
+            console.log(res.data)
             dispatch(setAuthUserDataAC(res.data))
         })
         .catch((e) => {
         const error = e.response ? e.response.data.error:(e.message+', more details in the console')
+            console.log(error)
     })
 }
 

@@ -24,13 +24,13 @@ const Login: React.FC<LoginPropsType> = (
             <div>
                 <InputText type={'email'}
                            placeholder={'Enter email'}
-                           onChange={onChangeEmail}
+                           onChangeText={onChangeEmail}
                 />
             </div>
             <div>
                 <InputText type={'password'}
                            placeholder={'Enter password'}
-                           onChange={onChangePassword}
+                           onChangeText={onChangePassword}
                 />
             </div>
             <div>
