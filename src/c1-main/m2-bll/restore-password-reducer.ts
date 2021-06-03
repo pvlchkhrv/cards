@@ -5,7 +5,6 @@ import {setAppError, setAppStatus} from './app-reducer';
 const SET_SUCCESS_MESSAGE = 'AUTH/SET-SUCCESS-MESSAGE';
 const SET_ERROR_MESSAGE = 'AUTH/SET-ERROR-MESSAGE';
 const SET_IS_REGISTERED = 'AUTH/SET-IS-REGISTERED';
-const SET_IS_FETCHING = 'AUTH/SET-IS-FETCHING';
 
 const initialState = {
     isRegistered: false,

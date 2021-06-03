@@ -1,7 +1,6 @@
 import React, {ChangeEvent} from 'react';
-import InputText from '../common/input/InputText';
-import Button from '../common/button/Button';
 import {RequestStatusType} from '../../m2-bll/app-reducer';
+import {RestorePasswordForm} from './RestorePasswordForm';
 
 interface IForgotProps {
     onClick: () => void
@@ -23,14 +22,11 @@ const RestorePassword: React.FC<IForgotProps> = (
     console.log('render PageFrom')
     return (
         <div>
-            <div>Restore Password Page</div>
+            <h1>Restore Password Page</h1>
             <div>
-                <div>
-                    <InputText type="text" onChange={onChange}/>
-                </div>
-                <div>
-                    <Button onClick={onClick} disabled={appStatus === 'loading'}>Restore</Button>
-                </div>
+                <RestorePasswordForm onClick={onClick}
+                                     onChange={onChange}
+                />
                 {appStatus === 'loading' && <div>Loading...</div>}
                 {appStatus === 'failed' && <div>{errorMessage}</div>}
                 {appStatus === 'succeed' && <div>{successMessage}</div>}
@@ -40,3 +36,5 @@ const RestorePassword: React.FC<IForgotProps> = (
 }
 
 export default RestorePassword;
+
+

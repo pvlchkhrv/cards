@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from '../../m2-bll/store';
-import {pingServerTC, restorePasswordTC} from '../../m2-bll/restore-password-reducer';
+import {restorePasswordTC} from '../../m2-bll/restore-password-reducer';
 import RestorePassword from './RestorePassword';
 import {Redirect} from 'react-router-dom';
 import {PATH} from '../Routes';
