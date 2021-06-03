@@ -6,9 +6,11 @@ import {restorePasswordReducer} from './restore-password-reducer';
 import {newPasswordReducer} from './new-password-reducer';
 import {testReducer} from './test-reducer';
 import thunk from 'redux-thunk';
+import {appReducer} from './app-reducer';
 
 const rootReducer = combineReducers({
-    login: loginReducer,        // auth: loginReducer
+    app: appReducer,
+    login: loginReducer,
     register: registerReducer,
     profile: profileReducer,
     restorePassword: restorePasswordReducer,
