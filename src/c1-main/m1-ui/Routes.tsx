@@ -1,12 +1,12 @@
 import React from 'react';
-import {Redirect, Route, Switch} from 'react-router-dom'
-import Register from './registration/Register';
+import {Switch, Route, Redirect} from 'react-router-dom'
+import Login from './login/Login';
 import Profile from './profile/Profile';
 import Error404 from './404/Error404';
+import RestorePassword from './restore-password/RestorePassword';
 import NewPassword from './new-password/NewPassword';
 import Test from './test/Test';
-import LoginContainer from './login/LoginContainer';
-import RestorePasswordPage from './restore-password/RestorePasswordPage';
+import RegisterPage from "./registration/RegisterPage";
 
 export const PATH = {
     LOGIN: '/login',
@@ -26,6 +26,8 @@ export const Routes: React.FC = () => {
                 <Route exact path='/' render={() => <Redirect to={'/login'}/>}/>
                 <Route path={PATH.LOGIN} render={() => <LoginContainer/>}/>
                 <Route path={PATH.REGISTER} render={() => <Register/>}/>
+                <Route path={PATH.LOGIN} render={() => <Login/>}/>
+                <Route path={PATH.REGISTER} render={() => <RegisterPage/>}/>
                 <Route path={PATH.PROFILE} render={() => <Profile/>}/>
                 <Route path={PATH.RESTORE_PASSWORD} render={() => <RestorePasswordPage/>}/>
                 <Route path={PATH.SET_NEW_PASSWORD} render={() => <NewPassword/>}/>

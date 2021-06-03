@@ -30,4 +30,5 @@ export type RequestStatusType =  'idle' | 'loading' | 'succeed' | 'failed'
 export type InitialStateType = {
     status: RequestStatusType
     isError: boolean
+
 }
