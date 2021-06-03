@@ -48,8 +48,8 @@ export const loginReducer = (state: InitialStateType = initialState, action: Act
 export const setAuthUserDataAC = (payload: InitialStateType) => ({type: SET_USER_DATA, payload}) as const;
 
 // Thunks
-export const getAuthUserData = (parameters: LoginParametersType) => (dispatch: Dispatch<ActionsType>) => {
-    authAPI.login(parameters)
+export const getAuthUserData = (email: string, password: string, rememberMe: boolean) => (dispatch: Dispatch<ActionsType>) => {
+    authAPI.login(email, password, rememberMe)
         .then(res => {
             dispatch(setAuthUserDataAC(res.data))
         })

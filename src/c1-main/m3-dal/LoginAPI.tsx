@@ -12,8 +12,8 @@ export type LoginParametersType = {
 }
 
 export const authAPI = {
-    login(parameters: LoginParametersType) {
-        return inctance.post('auth/login', parameters)
+    login(email: string, password: string, rememberMe: boolean) {
+        return inctance.post('auth/login', {email, password, rememberMe})
     },
     logout() {
         return inctance.delete('auth/me')
