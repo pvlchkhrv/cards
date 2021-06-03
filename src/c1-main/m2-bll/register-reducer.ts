@@ -1,6 +1,4 @@
-import React from 'react';
 import {authAPI} from "../m3-dall/instance";
-import {log} from "util";
 
 const IS_REGISTER = "AUTH/IS_REGISTER"
 const IS_ERROR_MESSAGE = "AUTH/IS_ERROR_MESSAGE"
