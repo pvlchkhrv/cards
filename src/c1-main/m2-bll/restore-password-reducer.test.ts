@@ -1,6 +1,6 @@
 import {
     InitialStateType,
-    restorePasswordReducer, setErrorMessage, setIsError,
+    restorePasswordReducer, setErrorMessage,
     setIsRegistered,
     setSuccessMessage
 } from './restore-password-reducer';
@@ -12,7 +12,6 @@ beforeEach(() => {
         errorMessage: '',
         successMessage: '',
         isRegistered: false,
-        isError: false
     }
 })
 
@@ -33,8 +32,6 @@ test('success message from server should be put into state', () => {
 test('statuses of isRegistered and isError should be changed', () => {
 
     const endState1 = restorePasswordReducer(startState,setIsRegistered(true))
-    const endState2 = restorePasswordReducer(startState,setIsError(true))
 
     expect(endState1.isRegistered).toBeTruthy()
-    expect(endState2.isError).toBeTruthy()
 })

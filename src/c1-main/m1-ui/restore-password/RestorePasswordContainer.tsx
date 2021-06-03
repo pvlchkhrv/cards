@@ -5,11 +5,12 @@ import {pingServerTC, restorePasswordTC} from '../../m2-bll/restore-password-red
 import RestorePassword from './RestorePassword';
 import {Redirect} from 'react-router-dom';
 import {PATH} from '../Routes';
+import {RequestStatusType} from '../../m2-bll/app-reducer';
 
 const RestorePasswordContainer: React.FC = () => {
     console.log('render Page')
 
-    const isError = useSelector<AppRootStateType, boolean>(state => state.restorePassword.isError);
+    const appStatus = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status);
     const isRegistered = useSelector<AppRootStateType, boolean>(state => state.restorePassword.isRegistered);
     const errorMessage = useSelector<AppRootStateType, string>(state => state.restorePassword.errorMessage);
     const successMessage = useSelector<AppRootStateType, string>(state => state.restorePassword.successMessage);
@@ -21,7 +22,6 @@ const RestorePasswordContainer: React.FC = () => {
         setEmail(e.currentTarget.value);
     }
     const onClickHandler = () => {
-        dispatch(pingServerTC());
         dispatch(restorePasswordTC(email));
         setEmail('')
     }
@@ -30,8 +30,7 @@ const RestorePasswordContainer: React.FC = () => {
         <div>
             <RestorePassword onClick={onClickHandler}
                              onChange={onChangeHandler}
-                             isError={isError}
-                             isRegistered={isRegistered}
+                             appStatus={appStatus}
                              errorMessage={errorMessage}
                              successMessage={successMessage}
 
