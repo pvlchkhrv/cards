@@ -14,13 +14,13 @@ export const appReducer = (state: InitialStateType = initialState, action: Actio
     }
 }
 
-export const setAppError = (isError: boolean) => ({ type: 'APP/SET-ERROR', isError } as const)
-export const setAppStatus = (status:  RequestStatusType) => ({ type: 'APP/SET-STATUS', status } as const)
+export const setAppError = (isError: boolean) => ({ type: 'APP/SET-ERROR', isError } as const);
+export const setAppStatus = (status:  RequestStatusType) => ({ type: 'APP/SET-STATUS', status } as const);
 
+// types
 export type SetAppErrorActionType = ReturnType<typeof setAppError>
 export type SetAppStatusActionType = ReturnType<typeof setAppStatus>
 
-// types
 type ActionsType =
     | SetAppErrorActionType
     | SetAppStatusActionType

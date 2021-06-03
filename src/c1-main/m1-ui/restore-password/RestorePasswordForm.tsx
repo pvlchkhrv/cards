@@ -10,7 +10,7 @@ interface RestorePasswordFormPropsType {
 export const RestorePasswordForm: React.FC<RestorePasswordFormPropsType> = ({onClick, onChange}) => {
 
     return (
-        <form action="" onSubmit={onClick}>
+        <form onSubmit={onClick}>
             <div>
                 <InputText type="text" onChange={onChange}/>
             </div>
