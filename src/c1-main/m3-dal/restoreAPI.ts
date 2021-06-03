@@ -12,7 +12,7 @@ const message = `<div>password recover link: <a href='https://neko-back.herokuap
 const instance = axios.create({
     baseURL: 'https://neko-back.herokuapp.com/2.0',
     withCredentials: true
-})
+});
 
 export const restorePasswordAPI = {
     restorePassword(email: string) {
@@ -22,8 +22,3 @@ export const restorePasswordAPI = {
         return instance.get(`/ping/?frontTime=${Date.now()}`);
     }
 };
-
-// export type restorePasswordResponseType = {
-//     info: string
-//     error: string
-// }

@@ -1,24 +1,40 @@
-import {restorePasswordReducer, setError, setSuccessMessage} from './restore-password-reducer';
-import dispatch from 'redux'
+import {
+    InitialStateType,
+    restorePasswordReducer, setErrorMessage, setIsError,
+    setIsRegistered,
+    setSuccessMessage
+} from './restore-password-reducer';
+
+let startState: InitialStateType;
+
+beforeEach(() => {
+    startState = {
+        errorMessage: '',
+        successMessage: '',
+        isRegistered: false,
+        isError: false
+    }
+})
 
 test('error message should be put into state', () => {
-    const startState = {
-        errorMessage: '',
-        successMessage: ''
-    }
 
-    const endState = restorePasswordReducer(startState, setError('Sokol na ohote'))
+    const endState = restorePasswordReducer(startState, setErrorMessage('Sokol na ohote'))
 
     expect(endState.errorMessage).toBe('Sokol na ohote')
 })
 
 test('success message from server should be put into state', () => {
-    const startState = {
-        errorMessage: '',
-        successMessage: ''
-    }
 
     const endState = restorePasswordReducer(startState,setSuccessMessage('Sokol na ohote 2'))
 
     expect(endState.successMessage).toBe('Sokol na ohote 2')
+})
+
+test('statuses of isRegistered and isError should be changed', () => {
+
+    const endState1 = restorePasswordReducer(startState,setIsRegistered(true))
+    const endState2 = restorePasswordReducer(startState,setIsError(true))
+
+    expect(endState1.isRegistered).toBeTruthy()
+    expect(endState2.isError).toBeTruthy()
 })

@@ -15,7 +15,7 @@ const initialState = {
     errorMessage: '',
 }
 
-export const restorePasswordReducer = (state: initialStateType = initialState, action: ActionsType): initialStateType => {
+export const restorePasswordReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
         case SET_IS_REGISTERED: return {...state, isRegistered: action.isRegistered};
         case SET_IS_ERROR: return {...state, isError: action.isError};
@@ -62,4 +62,4 @@ type ActionsType =
     | ReturnType<typeof setSuccessMessage>
     | ReturnType<typeof setErrorMessage>
 
-type initialStateType = typeof initialState;
+export type InitialStateType = typeof initialState;
