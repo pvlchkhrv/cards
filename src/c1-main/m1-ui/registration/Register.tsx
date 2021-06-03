@@ -8,35 +8,40 @@ import {AppRootStateStateType} from "../../m2-bll/store";
 import {PATH} from "../Routes";
 import {Redirect} from 'react-router-dom';
 
-const Register: React.FC = () => {
+interface RegisterProps {
+    onClick: () => void
+    onChangeMail: (e: ChangeEvent<HTMLInputElement>) => void
+    onChangePassword: (e: ChangeEvent<HTMLInputElement>) => void
+    isRegister: boolean
+    isErrorMessage: string
+    mail: string
+    password: string
+}
 
-    let isRegister = useSelector((state: AppRootStateStateType) => state.register.isRegister)
-    let isErrorMessage = useSelector((state: AppRootStateStateType) => state.register.isErrorMessage)
-    const dispatch = useDispatch()
-    const [mail, setMail] = useState<string>("")
-    const [password, setPassword] = useState<string>("")
-    const changeMail = (e: ChangeEvent<HTMLInputElement>) => {
-        setMail(e.currentTarget.value)
+const Register: React.FC<RegisterProps> = (
+    {
+        onClick,
+        onChangeMail,
+        onChangePassword,
+        isRegister,
+        isErrorMessage,
+        mail,
+        password,
     }
-    const changePassword = (e: ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.currentTarget.value)
-    }
-    const clickButton = () => {
-        dispatch(registrationThunk(mail, password))
+) => {
 
-    }
     return (
         <div>
             MY REGISTER PAGE
             <div>
                 <div>
-                    <input value={mail} type="text" placeholder="E-mail" onChange={changeMail}/>
+                    <input value={mail} type="text" placeholder="E-mail" onChange={onChangeMail}/>
                 </div>
                 <div>
-                    <input value={password} type="password" placeholder="Password" onChange={changePassword}/>
+                    <input value={password} type="password" placeholder="Password" onChange={onChangePassword}/>
                 </div>
             </div>
-            <button onClick={clickButton}>Sign Up</button>
+            <button onClick={onClick}>Sign Up</button>
             {isRegister ? <Redirect to={PATH.LOGIN}/> : <div>{isErrorMessage}</div>}
         </div>
     )
