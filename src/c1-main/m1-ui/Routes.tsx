@@ -7,6 +7,8 @@ import RestorePassword from './restore-password/RestorePassword';
 import NewPassword from './new-password/NewPassword';
 import Test from './test/Test';
 import RegisterPage from "./registration/RegisterPage";
+import LoginContainer from "./login/LoginContainer";
+import RestorePasswordPage from "./restore-password/RestorePasswordPage";
 
 export const PATH = {
     LOGIN: '/login',
@@ -25,7 +27,7 @@ export const Routes: React.FC = () => {
             <Switch>
                 <Route exact path='/' render={() => <Redirect to={'/login'}/>}/>
                 <Route path={PATH.LOGIN} render={() => <LoginContainer/>}/>
-                <Route path={PATH.REGISTER} render={() => <Register/>}/>
+                <Route path={PATH.REGISTER} render={() => <RegisterPage/>}/>
                 <Route path={PATH.LOGIN} render={() => <Login/>}/>
                 <Route path={PATH.REGISTER} render={() => <RegisterPage/>}/>
                 <Route path={PATH.PROFILE} render={() => <Profile/>}/>

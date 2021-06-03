@@ -1,10 +1,4 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
-import InputText from "../common/input/InputText";
-import Button from "../common/button/Button";
-import {authAPI} from '../../m3-dall/instance';
-import {useDispatch, useSelector} from "react-redux";
-import {AuthInitialStateType, registrationThunk} from "../../m2-bll/register-reducer";
-import {AppRootStateStateType} from "../../m2-bll/store";
 import {PATH} from "../Routes";
 import {Redirect} from 'react-router-dom';
 
