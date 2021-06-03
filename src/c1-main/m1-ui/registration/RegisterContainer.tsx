@@ -1,18 +1,13 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
-import InputText from "../common/input/InputText";
-import Button from "../common/button/Button";
-import {authAPI} from '../../m3-dall/instance';
+import React, {ChangeEvent, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {AuthInitialStateType, registrationThunk} from "../../m2-bll/register-reducer";
-import {AppRootStateStateType} from "../../m2-bll/store";
-import {PATH} from "../Routes";
-import {Redirect} from 'react-router-dom';
+import {registrationThunk} from "../../m2-bll/register-reducer";
+import {AppRootStateType} from "../../m2-bll/store";
 import Register from "./Register";
 
 const RegisterContainer: React.FC = () => {
     console.log('render Container')
-    let isRegister = useSelector((state: AppRootStateStateType) => state.register.isRegister)
-    let isErrorMessage = useSelector((state: AppRootStateStateType) => state.register.isErrorMessage)
+    let isRegister = useSelector((state: AppRootStateType) => state.register.isRegister)
+    let isErrorMessage = useSelector((state: AppRootStateType) => state.register.isErrorMessage)
     const dispatch = useDispatch()
     const [mail, setMail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
