@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction} from 'react';
+import React from 'react';
 import InputText from "../common/input/InputText";
 import Checkbox from "../common/checkbox/Checkbox";
 import Button from "../common/button/Button";

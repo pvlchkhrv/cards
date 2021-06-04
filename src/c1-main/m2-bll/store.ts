@@ -8,7 +8,7 @@ import {testReducer} from './test-reducer';
 import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
-    login: loginReducer,        // auth: loginReducer
+    login: loginReducer,
     register: registerReducer,
     profile: profileReducer,
     restorePassword: restorePasswordReducer,

@@ -1,4 +1,4 @@
-import {authAPI, LoginParametersType} from "../m3-dal/LoginAPI";
+import {authAPI} from "../m3-dal/LoginAPI";
 import {Dispatch} from "redux";
 
 const SET_USER_DATA = 'SET_USER_DATA'
@@ -55,9 +55,9 @@ export const getAuthUserData = (email: string, password: string, rememberMe: boo
             dispatch(setAuthUserDataAC(res.data))
         })
         .catch((e) => {
-        const error = e.response ? e.response.data.error:(e.message+', more details in the console')
+            const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
             console.log(error)
-    })
+        })
 }
 
 
