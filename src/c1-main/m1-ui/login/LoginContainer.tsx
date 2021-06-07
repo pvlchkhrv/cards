@@ -13,7 +13,7 @@ const LoginContainer: React.FC<LoginContainerPropsType> = (props: any) => {
 
     const dispatch = useDispatch();
     const [email, setEmail] = useState<string>('panich2303@gmail.com');
-    const [password, setPassword] = useState<string>('1234567');
+    const [password, setPassword] = useState<string>('12345678');
     const [rememberMe, setRememberMe] = useState<boolean>(false);
 
     const onClickHandler = () => {
