@@ -3,6 +3,10 @@ import {cardsAPI} from "../../m3-dal/cardsAPI";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../m2-bll/store";
 import {getCardsThunk} from "../../m2-bll/cards-reducer";
+import { TableData } from './Table';
+
+
+
 
 const CardsPage: React.FC = () => {
     const dispatch = useDispatch()
@@ -22,6 +26,7 @@ const CardsPage: React.FC = () => {
             {question}
             <button onClick={onclickHandler}>DISPATCH</button>
             {maxGrade}
+            <TableData />
         </div>
 
     )

@@ -6,7 +6,7 @@ export const instance = axios.create({
 })
 
 export const cardsAPI = {
-    getCards(packId = "60bca38e3a402900041d8b63") {
+    getCards(packId = "60a508fe94de4b00046c1e2c") {
         return instance.get(`cards/card?cardsPack_id=${packId}`,)
     }
 }
