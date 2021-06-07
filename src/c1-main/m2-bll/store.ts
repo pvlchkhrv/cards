@@ -7,6 +7,7 @@ import {newPasswordReducer} from './new-password-reducer';
 import {testReducer} from './test-reducer';
 import thunk from 'redux-thunk';
 import {appReducer} from './app-reducer';
+import cardsReducer from "./cards-reducer";
 
 const rootReducer = combineReducers({
     app: appReducer,
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
     profile: profileReducer,
     restorePassword: restorePasswordReducer,
     newPassword: newPasswordReducer,
-    test: testReducer
+    test: testReducer,
+    cards: cardsReducer,
 });
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));
