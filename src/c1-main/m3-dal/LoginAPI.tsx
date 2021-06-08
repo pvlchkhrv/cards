@@ -16,6 +16,6 @@ export const authAPI = {
         return inctance.post('auth/login', {email, password, rememberMe})
     },
     logout() {
-        return inctance.delete('auth/me')
+        return inctance.delete('auth/me', {})
     }
 }
