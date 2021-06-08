@@ -6,7 +6,19 @@ export const instance = axios.create({
 })
 
 export const cardsAPI = {
-    getCards(packId = "60a508fe94de4b00046c1e2c") {
+    authMe() {
+        return instance.post('/auth/me', {});
+    },
+    getCards(packId = "5fe66bf32f93dc434098cdd7") {
         return instance.get(`cards/card?cardsPack_id=${packId}`,)
+    },
+    deleteCard(cardId: string) {
+        return instance.delete(`cards/card?id=${cardId}`,)
+    },
+    createCard(packId = "5fe66bf32f93dc434098cdd7") {
+        return instance.post(`cards/card`, {card: {cardsPack_id: packId}})
+    },
+    updateCard(cardId: string) {
+        return instance.put(`cards/card`, {card:{_id: cardId}})
     }
 }
