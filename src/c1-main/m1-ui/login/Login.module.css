@@ -34,9 +34,9 @@
     margin-top: 50px;
 }
 
-:hover {
-    color: #585a92
-}
+/*:hover {*/
+/*    color: #585a92*/
+/*}*/
 
 .loginBtn {
     background-color: rgb(48, 64, 206);
@@ -48,9 +48,9 @@
     margin-top: 90px;
 }
 
-:hover {
-    background-color: rgb(82, 97, 235);
-}
+/*:hover {*/
+/*    background-color: rgb(245, 209, 246);*/
+/*}*/
 
 .account {
     border: none;
@@ -63,6 +63,6 @@
     /*@include text (16px, 800, 24px,#1d1c85 );*/
 }
 
-:hover {
-    color: #52519c;
-}
+/*:hover {*/
+/*    color: #52519c;*/
+/*}*/

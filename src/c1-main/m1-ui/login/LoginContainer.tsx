@@ -5,6 +5,7 @@ import {AppRootStateType} from "../../m2-bll/store";
 import {getAuthUserData, LoginInitialStateType, setErrorMessageAC} from "../../m2-bll/login-reducer";
 import {Redirect} from "react-router-dom";
 import {RequestStatusType} from "../../m2-bll/app-reducer";
+import {PATH} from "../Routes";
 
 type LoginContainerPropsType = {}
 
@@ -23,7 +24,7 @@ const LoginContainer: React.FC<LoginContainerPropsType> = (props: any) => {
     }, [email, password])
 
     if (isAuth.user !== null) {
-        return <Redirect to={'/profile'}/>
+        return <Redirect to={PATH.PROFILE}/>
     }
 
     const addUserData = () => {
