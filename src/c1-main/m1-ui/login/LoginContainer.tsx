@@ -36,9 +36,9 @@ const LoginContainer: React.FC<LoginContainerPropsType> = (props: any) => {
     const addNewPassword = (newPassword: string) => {
         setPassword(newPassword)
     }
-    const changeRememberMe = (newValue: boolean) => {
-        setRememberMe(newValue)
-    }
+    // const changeRememberMe = (newValue: boolean) => {
+    //     setRememberMe(newValue)
+    // }
 
     const onChangeEmailHandler = (e: ChangeEvent<HTMLInputElement>) => {
         addNewEmail(e.currentTarget.value)
@@ -46,9 +46,9 @@ const LoginContainer: React.FC<LoginContainerPropsType> = (props: any) => {
     const onChangePasswordHandler = (e: ChangeEvent<HTMLInputElement>) => {
         addNewPassword(e.currentTarget.value)
     }
-    const onChangeRememberMeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        changeRememberMe(e.currentTarget.checked)
-    }
+    // const onChangeRememberMeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    //     changeRememberMe(e.currentTarget.checked)
+    // }
 
     return (
         <Login
@@ -56,7 +56,7 @@ const LoginContainer: React.FC<LoginContainerPropsType> = (props: any) => {
             onChangeEmailHandler={onChangeEmailHandler}
             onChangePasswordHandler={onChangePasswordHandler}
             addUserData={addUserData}
-            onChangeRememberMeHandler={onChangeRememberMeHandler}
+            onChangeRememberMeHandler={setRememberMe}
             isAuth={isAuth}
             preloader={loading}
         />

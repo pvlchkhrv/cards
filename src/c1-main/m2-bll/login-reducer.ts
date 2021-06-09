@@ -1,7 +1,7 @@
 import {authAPI} from "../m3-dal/LoginAPI";
 import {Dispatch} from "redux";
 import {setAppStatus} from "./app-reducer";
-import {setErrorProfile} from "./profile-reducer";
+import {setErrorProfileAC} from "./profile-reducer";
 
 const SET_USER_DATA = 'SET_USER_DATA';
 const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE';
@@ -98,7 +98,7 @@ export const logOutTC = () => (dispatch: Dispatch) => {
             }
         )
         .catch((e) => {
-            dispatch(setErrorProfile(e.response
+            dispatch(setErrorProfileAC(e.response
                 ? e.response.data.error
                 : (e.message + ', more details in the console')
             ))

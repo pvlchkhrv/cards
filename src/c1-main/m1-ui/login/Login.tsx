@@ -24,22 +24,32 @@ const Login: React.FC<LoginPropsType> = (props) => {
             <h2 className={s.title}> LOGIN </h2>
             <span className={s.error}>{props.isAuth.errorMessage}</span>
             <form className={s.form}>
-                <InputText type={'email'}
-                           onChange={props.onChangeEmailHandler}
-                           placeholder={'Email'}
-                />
-                <InputText type={'password'}
-                           onChange={props.onChangePasswordHandler}
-                           placeholder={'Password'}
-                />
-                <Checkbox type={'checkbox'}
-                          onChangeChecked={props.onChangeRememberMeHandler}>remember me
-                </Checkbox>
-                <Button disabled={props.isAuth.loginButtonDisable}
-                        className={s.loginBtn}
-                        onClick={props.addUserData}>Submit</Button>
+                <div>
+                    <InputText type={'email'}
+                               onChange={props.onChangeEmailHandler}
+                               placeholder={'Email'}
+                    />
+                </div>
+                <div>
+                    <InputText type={'password'}
+                               onChange={props.onChangePasswordHandler}
+                               placeholder={'Password'}
+                    />
+                </div>
+                <div>
+                    <Checkbox type={'checkbox'}
+                              onChangeChecked={props.onChangeRememberMeHandler}>remember me
+                    </Checkbox>
+                </div>
+                <div>
+                    <Button disabled={props.isAuth.loginButtonDisable}
+                            className={s.loginBtn}
+                            onClick={props.addUserData}>Submit</Button>
+                </div>
             </form>
-            <NavLink className={s.reg} to={PATH.REGISTER}>Sign up</NavLink>
+            <div>
+                <NavLink className={s.reg} to={PATH.REGISTER}>Sign up</NavLink>
+            </div>
         </div>
     )
 }
