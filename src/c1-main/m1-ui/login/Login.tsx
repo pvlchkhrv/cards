@@ -1,23 +1,21 @@
-import React, {Dispatch, SetStateAction} from 'react';
+import React, {ChangeEvent, Dispatch, SetStateAction} from 'react';
 import InputText from "../common/input/InputText";
 import Checkbox from "../common/checkbox/Checkbox";
 import Button from "../common/button/Button";
+import {LoginInitialStateType} from "../../m2-bll/login-reducer";
+import {RequestStatusType} from "../../m2-bll/app-reducer";
 
 type LoginPropsType = {
-    onClick: () => void,
-    onChangeEmail: any                 //Dispatch<SetStateAction<string>>
-    onChangePassword: any                 //Dispatch<SetStateAction<string>>
-    onChangeChecked: any                //Dispatch<SetStateAction<boolean>>
+    title: string
+    onChangeEmailHandler: (e: ChangeEvent<HTMLInputElement>) => void
+    onChangePasswordHandler: (e: ChangeEvent<HTMLInputElement>) => void
+    addUserData: () => void
+    onChangeRememberMeHandler: (e: ChangeEvent<HTMLInputElement>) => void
+    isAuth: LoginInitialStateType
+    preloader: RequestStatusType
 }
 
-const Login: React.FC<LoginPropsType> = (
-    {
-        onClick,
-        onChangeEmail,
-        onChangePassword,
-        onChangeChecked
-    }
-) => {
+const Login: React.FC<LoginPropsType> = (props) => {
     return (
         <div>
             <h3> LOGIN </h3>

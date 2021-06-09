@@ -22,7 +22,7 @@ type UserDataType = {
     error?: string
 }
 
-type InitialStateType = typeof initialState;
+export type LoginInitialStateType = typeof initialState;
 
 const initialState = {
     user: null as UserDataType | null,
@@ -37,7 +37,7 @@ type ActionsType =
     | ReturnType<typeof loginButtonDisableAC>
     | ReturnType<typeof logOutAC>
 
-export const loginReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
+export const loginReducer = (state: LoginInitialStateType = initialState, action: ActionsType): LoginInitialStateType => {
     switch (action.type) {
         case SET_USER_DATA:
             return {
