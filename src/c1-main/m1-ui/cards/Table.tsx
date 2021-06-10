@@ -1,77 +1,80 @@
 import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
 import {Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@material-ui/core';
 import {Pagination} from '@material-ui/lab';
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "../../m2-bll/store";
-import classes from './CardsPage.module.css'
-import {createCardThunk, deleteCardThunk, updateCardThunk} from "../../m2-bll/cards-reducer";
+import s from './CardsPage.module.css'
+import {AuthInitialStateType} from "../../m2-bll/cards-reducer";
 import {RequestStatusType} from "../../m2-bll/app-reducer";
+import IconButton from "@material-ui/core/IconButton";
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 
-export const TableData = () => {
-    const dispatch = useDispatch()
-    const appStatus = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status);
-    const cards = useSelector((state: AppRootStateType) => state.cards.cards)
-    const onDeleteClickHandler = (id: string) => {
-        dispatch(deleteCardThunk(id));
-    };
-    const onCreateClickHandler = (cardPackId: string) => {
-        dispatch(createCardThunk(cardPackId));
-        // alert("create");
-    };
-    const onUpdateClickHandler = (id: string) => {
-      dispatch(updateCardThunk(id));
-        // alert("update")
-    };
+interface TableProps {
+    cardsObj: AuthInitialStateType
+    appStatus: RequestStatusType
+    onDeleteClickHandler: (cardPackId: string) => void
+    onUpdateClickHandler: (id: string) => void
+    sortUpClick: () => void
+    sortDownClick: () => void
+}
+
+export const TableData = (
+    {
+        onDeleteClickHandler,
+        onUpdateClickHandler,
+        appStatus,
+        cardsObj,
+        sortDownClick,
+        sortUpClick
+    }: TableProps) => {
 
     return (
         <div>
             {appStatus === 'loading' && <div>Loading...</div>}
             {appStatus === 'failed' && <div>{appStatus}</div>}
-            {appStatus === 'succeed' && <div>
-                <TableContainer component={Paper}>
-                    <Table className={classes.table} aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Question</TableCell>
-                                <TableCell align="center">Answer</TableCell>
-                                <TableCell align="center">Grade</TableCell>
-                                <TableCell align="center">Updated</TableCell>
-                                <TableCell align="center">Rating</TableCell>
-                                <TableCell align="center">Action</TableCell>
+            {appStatus === 'succeed' && <div></div>}
+            <TableContainer component={Paper}>
+                <Table className={s.table} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Question</TableCell>
+                            <TableCell align="center">Answer</TableCell>
+                            <TableCell align="center">Grade</TableCell>
+                            <TableCell align="center">Updated
+                                <IconButton onClick={sortDownClick} size="small">
+                                    <ArrowUpwardIcon fontSize="inherit"/>
+                                </IconButton>
+                                <IconButton onClick={sortUpClick} size="small">
+                                    <ArrowDownwardIcon fontSize="inherit"/>
+                                </IconButton>
+                            </TableCell>
+                            <TableCell align="center">Rating</TableCell>
+                            <TableCell align="center">Action</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {cardsObj.cards.map((card) => (
+                            <TableRow key={card._id}>
+                                <TableCell component="th">{card.question}</TableCell>
+                                <TableCell align="center">{card.answer}</TableCell>
+                                <TableCell align="center">{card.grade}</TableCell>
+                                <TableCell align="center">{card.updated}</TableCell>
+                                <TableCell align="center">{card.rating}</TableCell>
+                                <TableCell align="center">
+                                    <Button variant={'contained'} color={'primary'} size={'medium'}
+                                            onClick={() => onUpdateClickHandler(card._id)}>EDIT</Button>
+                                    <Button variant={'contained'} color={'secondary'} size={'medium'} onClick={() => {
+                                        onDeleteClickHandler(card._id)
+                                    }}>DELETE</Button>
+                                </TableCell>
                             </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {cards.map((card) => (
-                                <TableRow key={card._id}>
-                                    <TableCell component="th">{card.question}</TableCell>
-                                    <TableCell align="center">{card.answer}</TableCell>
-                                    <TableCell align="center">{card.grade}</TableCell>
-                                    <TableCell align="center">{card.updated}</TableCell>
-                                    <TableCell align="center">{card.rating}</TableCell>
-                                    <TableCell align="center">
-                                        <Button onClick={() => onCreateClickHandler(card.cardsPack_id)}>ADD</Button>
-                                        <Button onClick={() => onUpdateClickHandler(card._id)}>EDIT</Button>
-                                        <Button onClick={() => {
-                                            onDeleteClickHandler(card._id)
-                                        }}>DELETE</Button>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <PaginationBar/>
-            </div>}
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+
         </div>
     );
 }
 
-export const PaginationBar = () => {
-    return (
-        <div>
-            <Pagination count={10} variant="outlined"/>
-        </div>
-    )
-}
+
 
