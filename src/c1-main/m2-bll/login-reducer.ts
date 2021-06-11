@@ -8,7 +8,7 @@ const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE';
 const LOGIN_BUTTON_DISABLE = 'LOGIN_BUTTON_DISABLE';
 const LOGOUT = 'LOGOUT';
 
-type UserDataType = {
+export type UserDataType = {
     _id: string,
     email: string,
     name: string,

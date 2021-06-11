@@ -1,0 +1,7 @@
+.main {
+    height: 100vh;
+    background: linear-gradient(180deg, #e6d4de 0%, #9890c7 100%);
+    padding-top: 60px;
+    font-size: 36px;
+    font-weight: 700;
+}

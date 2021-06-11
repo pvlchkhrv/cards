@@ -1,21 +1,14 @@
 import {instance} from "../m3-dall/instance";
-
-export type ProfileDataType = {
-    _id: string,
-    email: string,
-    name: string,
-    avatar?: string,
-    publicCardPacksCount: number
-    created: Date,
-    updated: Date,
-    isAdmin: boolean,
-    verified: boolean,
-    rememberMe: boolean
-    error?: string
-}
+import {ChangeDataProfile, ProfileDataType} from "../m2-bll/profile-reducer";
 
 export const profileAPI = {
-    getProfileData() {
+    authProfileData() {
         return instance.post<ProfileDataType>(`auth/me`, {})
+    },
+    changeAvatarProfile(avatar?: string) {
+        return instance.put<ChangeDataProfile>(`auth/me`, {avatar})
+    },
+    changeNameProfile(name: string) {
+        return instance.put<ChangeDataProfile>(`auth/me`, {name})
     }
 };

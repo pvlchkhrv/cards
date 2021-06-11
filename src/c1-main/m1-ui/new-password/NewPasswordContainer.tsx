@@ -42,6 +42,7 @@ export const NewPasswordContainer = () => {
                 onChangeNewPassword={onChangeNewPassword}
                 onSubmit={onSubmit}
                 viewPassword={viewPassword}
+                newPassword={newPassword}
             />
         </div>
     )

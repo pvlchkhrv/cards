@@ -14,11 +14,12 @@ type NewPasswordPropsType = {
     onChangeNewPassword: (e: ChangeEvent<HTMLInputElement>) => void
     onSubmit: () => void
     viewPassword: () => void
+    newPassword: string
 }
 
 const NewPassword: React.FC<NewPasswordPropsType> = ({
                                                          error, isChecked, requestStatus,
-                                                         onChangeNewPassword, onSubmit, viewPassword
+                                                         onChangeNewPassword, onSubmit, viewPassword, newPassword
                                                      }) => {
 
     return (
@@ -38,16 +39,18 @@ const NewPassword: React.FC<NewPasswordPropsType> = ({
                         type={isChecked ? "text" : "password"}
                         onChange={onChangeNewPassword}
                         placeholder={"Password"}
+                        value={newPassword}
                     />
                     <span onClick={viewPassword}>View password</span>
                     <div>
-                        <span className={s.text}>Create new password</span>
+                        <span className={s.text}> Create new password and we will send you further instructions to email</span>
                     </div>
 
                     <Button
                         disabled={requestStatus === "loading"}
                         className={s.button}
-                        onClick={onSubmit}>Create new password</Button>
+                        onClick={onSubmit}>Create new password
+                    </Button>
                 </form>
             </div>
         </div>
