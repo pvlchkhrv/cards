@@ -23,7 +23,8 @@ type UserDataType = {
 }
 
 const initialState = {
-    user: {},
+    user: {
+    },
     isAuth: false
 };
 

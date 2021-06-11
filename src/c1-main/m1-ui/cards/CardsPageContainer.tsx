@@ -16,11 +16,15 @@ import {RequestStatusType} from "../../m2-bll/app-reducer";
 import Cards from "./Cards";
 import {Pagination} from "@material-ui/lab";
 import TablePagination from "@material-ui/core/TablePagination";
+import { useParams } from 'react-router-dom';
 
 const CardsPageContainer = () => {
+    //5fa566f77b2f370004ef8cec
     console.log("CardsPageContainer")
     const [value, setValue] = useState("")
     const dispatch = useDispatch()
+    const {cardPackID} = useParams<{cardPackID:string}>();
+
     const searchValue = useSelector<AppRootStateType, string>(state => state.cards.searchValue);
     const page = useSelector<AppRootStateType, number>(state => state.cards.page);
     const pageCount = useSelector<AppRootStateType, number>(state => state.cards.pageCount);
@@ -29,40 +33,40 @@ const CardsPageContainer = () => {
     const appStatus = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status);
     const cardsObj = useSelector<AppRootStateType, AuthInitialStateType>(state => state.cards);
     const onDeleteClickHandler = (id: string) => {
-        dispatch(deleteCardThunk("", "5fa566f77b2f370004ef8cec", "", page, pageCount, id));
+        dispatch(deleteCardThunk("", cardPackID, "", page, pageCount, id));
     };
     const onCreateClickHandler = () => {
-        dispatch(createCardThunk("", "5fa566f77b2f370004ef8cec", "", page, pageCount));
+        dispatch(createCardThunk("", cardPackID, "", page, pageCount));
     };
     const onUpdateClickHandler = (id: string) => {
-        dispatch(updateCardThunk("", "5fa566f77b2f370004ef8cec", "", page, pageCount, id));
+        dispatch(updateCardThunk("", cardPackID, "", page, pageCount, id));
     };
     const searchClick = () => {
         dispatch(setQuestion(value))
-        dispatch(getCardsThunk(value, "5fa566f77b2f370004ef8cec", "", page, pageCount))
+        dispatch(getCardsThunk(value, cardPackID, "", page, pageCount))
     }
     const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
         setValue(e.currentTarget.value)
     }
     const sortUpClick = () => {
-        dispatch(getCardsThunk("", "5fa566f77b2f370004ef8cec", "0updated", page, pageCount))
+        dispatch(getCardsThunk("", cardPackID, "0updated", page, pageCount))
     }
     const sortDownClick = () => {
-        dispatch(getCardsThunk("", "5fa566f77b2f370004ef8cec", "1updated", page, pageCount))
+        dispatch(getCardsThunk("", cardPackID, "1updated", page, pageCount))
     }
     const handleChangePage = (event: unknown, newPage: number) => {
-        dispatch(getCardsThunk("", "5fa566f77b2f370004ef8cec", "", newPage + 1, pageCount))
+        dispatch(getCardsThunk("", cardPackID, "", newPage + 1, pageCount))
     };
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(setPageCount(+event.target.value))
-        dispatch(getCardsThunk("", "5fa566f77b2f370004ef8cec", "", page, +event.target.value));
+        dispatch(getCardsThunk("", cardPackID, "", page, +event.target.value));
         console.log(+event.target.value)
     };
     useEffect(() => {
         if (!isAuth) {
             dispatch(aboutMeThunk())
         }
-        dispatch(getCardsThunk("", "5fa566f77b2f370004ef8cec", "", page, pageCount))
+        dispatch(getCardsThunk("", cardPackID, "", page, pageCount))
     }, [isAuth, dispatch])
 
     return (
