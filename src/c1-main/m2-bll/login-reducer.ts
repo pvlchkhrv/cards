@@ -8,7 +8,7 @@ type InitialStateType = {
     isAuth: boolean
 }
 
-type UserDataType = {
+export type UserDataType = {
     _id: string,
     email: string,
     name: string,
@@ -23,7 +23,7 @@ type UserDataType = {
 }
 
 const initialState = {
-    user: {},
+    user: {} as UserDataType,
     isAuth: false
 };
 

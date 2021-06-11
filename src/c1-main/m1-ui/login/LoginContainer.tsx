@@ -12,8 +12,8 @@ const LoginContainer: React.FC<LoginContainerPropsType> = (props: any) => {
     const isAuth = useSelector<AppRootStateType, boolean>(state => state.login.isAuth);
 
     const dispatch = useDispatch();
-    const [email, setEmail] = useState<string>('panich2303@gmail.com');
-    const [password, setPassword] = useState<string>('12345678');
+    const [email, setEmail] = useState<string>('nya-admin@nya.nya');
+    const [password, setPassword] = useState<string>('1qazxcvBG');
     const [rememberMe, setRememberMe] = useState<boolean>(false);
 
     const onClickHandler = () => {

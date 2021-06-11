@@ -1,46 +1,23 @@
 import {Dispatch} from 'redux';
 import {setAppError, setAppStatus} from './app-reducer';
-import {
-    packsAPI,
-    PacksPostDataType,
-    PacksQueryParamsType,
-    PacksResponseDataType,
-    PackType
-} from '../m3-dal/cardsPackAPI';
+import {packsAPI} from '../m3-dal/cardsPackAPI';
+import {ThunkAction} from 'redux-thunk';
+import {AppRootStateType} from './store';
 
 const SET_PACKS = 'PACKS/SET-PACKS';
-const DELETE_PACK = 'PACKS/DELETE-PACK';
-const UPDATE_PACK_TITLE = 'PACKS/UPDATE-TITLE';
-const SET_NEW_PACK = 'PACKS/SET-NEW-PACK';
+const SET_USER_ID = 'PACKS/SET-USER-ID';
 
-const initialState = {
+export const PacksInitState: PacksStateType = {
     cardPacks: [],
-    cardPacksTotalCount: 0,
-    maxCardsCount: 0,
-    minCardsCount: 0,
-    page: 0,
-    pageCount: 0
-}
+    packUser_id: '',
+};
 
-export const packsReducer = (state: PacksResponseDataType = initialState, action: ActionsType): PacksResponseDataType => {
+export const packsReducer = (state: PacksStateType = PacksInitState, action: ActionsType): PacksStateType => {
     switch (action.type) {
         case SET_PACKS:
             return {...state, cardPacks: [...action.cardPacks]};
-        case DELETE_PACK:
-            return {
-                ...state,
-                cardPacks: state.cardPacks.filter(p => p._id !== action.id)
-            };
-        case UPDATE_PACK_TITLE:
-            return {
-                ...state,
-                cardPacks: state.cardPacks.map(p => {
-                    if (p._id === action.id) {
-                        p.name = action.title
-                    }
-                    return p;
-                })
-            };
+        case SET_USER_ID:
+            return {...state, packUser_id: action.userId};
         default:
             return state;
     }
@@ -48,71 +25,85 @@ export const packsReducer = (state: PacksResponseDataType = initialState, action
 
 //ACs
 export const setPacks = (cardPacks: PackType []) => ({type: SET_PACKS, cardPacks} as const);
-export const deletePack = (id: string) => ({type: DELETE_PACK, id} as const);
-export const updatePackTitle = (id: string, title: string) => ({type: UPDATE_PACK_TITLE, id, title} as const);
+export const setUserId = (userId: string) => ({type: SET_USER_ID, userId} as const);
 
 //Thunks
-export const authMe = () => () => {
-}
-export const getPacks = (params: PacksQueryParamsType) => (dispatch: Dispatch<ActionsType>) => {
+export const getPacks = () => async (dispatch: Dispatch<ActionsType>, getState: () => AppRootStateType) => {
+    debugger
     dispatch(setAppStatus('loading'));
-    packsAPI.getPacks(params)
-        .then(res => {
-            dispatch(setPacks(res.data.cardPacks));
-            dispatch(setAppStatus('succeed'));
-            dispatch(setAppError(false));
-        })
-        .catch((error) => {
-            dispatch(setAppStatus('failed'));
-            dispatch(setAppError(true));
-        })
+    const packUser_id = getState().packs.packUser_id;
+    try {
+        const response = await packsAPI.getPacks(packUser_id);
+        dispatch(setPacks(response.cardPacks));
+        dispatch(setAppStatus('succeed'));
+        console.log(response);
+    } catch (e) {
+        dispatch(setAppError(true));
+        dispatch(setAppStatus('failed'));
+    }
+};
+
+export const createPack = (title: string) => async (dispatch: Dispatch<any>) => {
+    dispatch(setAppStatus('loading'));
+    try {
+        const response = await packsAPI.addPack(title);
+        dispatch(getPacks());
+        dispatch(setAppStatus('succeed'));
+        console.log(response);
+    } catch (e) {
+        dispatch(setAppError(true));
+        dispatch(setAppStatus('failed'));
+    }
+};
+
+export const deletePackOnServer = (id: string): ThunkAction<void, AppRootStateType, unknown, any> => (dispatch) => {
+    dispatch(setAppStatus('loading'));
+    try {
+        const response = packsAPI.deletePack(id);
+        dispatch(getPacks());
+        dispatch(setAppStatus('succeed'));
+        console.log(response);
+    } catch (e) {
+        dispatch(setAppError(true));
+        dispatch(setAppStatus('failed'));
+    }
 }
 
-// export const createPack = (data: PacksPostDataType) => (dispatch: Dispatch<ActionsType>) => {
-//     dispatch(setAppStatus('loading'));
-//     packsAPI.addPack(data)
-//         .then(res => {
-//             dispatch(getPacks({}));
-//             dispatch(setAppStatus('succeed'));
-//             dispatch(setAppError(false));
-//         })
-//         .catch((error) => {
-//             dispatch(setAppStatus('failed'));
-//             dispatch(setAppError(true));
-//         })
-// }
-
-export const deletePackOnServer = (id: string) => (dispatch: Dispatch<ActionsType>) => {
+export const updatePackTitleOnServer = (id: string, title: string) => (dispatch: Dispatch<any>) => {
     dispatch(setAppStatus('loading'));
-    packsAPI.deletePack(id)
-        .then(res => {
-            dispatch(deletePack(id));
-            dispatch(setAppStatus('succeed'));
-            dispatch(setAppError(false));
-        })
-        .catch((error) => {
-            dispatch(setAppStatus('failed'));
-            dispatch(setAppError(true));
-        })
+    try {
+        const response = packsAPI.updatePack(id, title);
+        dispatch(getPacks());
+        dispatch(setAppStatus('succeed'));
+        console.log(response);
+    } catch (e) {
+        dispatch(setAppError(true));
+        dispatch(setAppStatus('failed'));
+    }
 }
-// export const updatePackTitleOnServer = (id: string, title: string) => (dispatch: Dispatch<ActionsType>) => {
-//     dispatch(setAppStatus('loading'));
-//     packsAPI.deletePack(id)
-//         .then(res => {
-//             dispatch(deletePack(id));
-//             dispatch(setAppStatus('succeed'));
-//             dispatch(setAppError(false));
-//         })
-//         .catch((error) => {
-//             dispatch(setAppStatus('failed'));
-//             dispatch(setAppError(true));
-//         })
-// }
 
 //Types
 type ActionsType =
     | ReturnType<typeof setAppError>
     | ReturnType<typeof setAppStatus>
     | ReturnType<typeof setPacks>
-    | ReturnType<typeof deletePack>
-    | ReturnType<typeof updatePackTitle>
+    | ReturnType<typeof setUserId>
+
+export type PackType = {
+    _id: string
+    user_id: string
+    name: string
+    path: string // папка	,
+    cardsCount: number
+    grade: number // средняя оценка карточек
+    shots: number // количество попыток			приватные колоды будут
+    rating: number // лайки	только если указать свой
+    type: string
+    created: string
+    updated: string
+    __v: number
+};
+export type PacksStateType = {
+    cardPacks: PackType[];
+    packUser_id: string;
+}

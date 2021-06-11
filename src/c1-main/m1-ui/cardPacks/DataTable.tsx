@@ -1,25 +1,20 @@
-import {useDispatch, useSelector} from 'react-redux';
-import {AppRootStateType} from '../../m2-bll/store';
-import {PackType} from '../../m3-dal/cardsPackAPI';
-import React, {useEffect} from 'react';
-import {deletePackOnServer, getPacksFromServer} from '../../m2-bll/cardPacks-reducer';
+import React from 'react';
 import {Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@material-ui/core';
-import {Pagination} from '@material-ui/lab';
+import {PackType} from '../../m2-bll/cardPacks-reducer';
 
-export const DataTable = () => {
+type DataTablePropsType = {
+    packs: PackType []
+    deletePackHandler: (packId: string) => void
+    editPackHandler: (packId: string, title: string) => void
+    isMine: boolean
+}
 
-    const rows = useSelector<AppRootStateType, PackType[]>(state => state.packs.cardPacks);
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(getPacksFromServer({}));
-    }, [dispatch]);
-
-    const onDeleteClickHandler = (id: string) => {
-        dispatch(deletePackOnServer(id));
-        dispatch(getPacksFromServer);
-    };
-
+export const DataTable: React.FC<DataTablePropsType> = ({
+                                                            packs,
+                                                            deletePackHandler,
+                                                            editPackHandler,
+                                                            isMine
+                                                        }) => {
     return (
         <div>
             <TableContainer component={Paper}>
@@ -34,33 +29,31 @@ export const DataTable = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
-                            <TableRow key={row.name}>
+                        {packs.map((pack) => (
+                            <TableRow key={pack._id}>
                                 <TableCell component="th" scope="row">
-                                    {row.name}
+                                    {pack.name}
                                 </TableCell>
-                                <TableCell align="center">{row.cardsCount}</TableCell>
-                                <TableCell align="center">{row.updated}</TableCell>
-                                <TableCell align="center">{row.created}</TableCell>
+                                <TableCell align="center">{pack.cardsCount}</TableCell>
+                                <TableCell align="center">{pack.updated}</TableCell>
+                                <TableCell align="center">{pack.created}</TableCell>
                                 <TableCell align="center">
-                                    <Button onClick={() => onDeleteClickHandler(row._id)}>Delete</Button>
-                                    <Button>Edit</Button>
-                                    <Button>Learn</Button>
+                                    {
+                                        isMine
+                                            ? <div>
+                                                <Button onClick={() => deletePackHandler(pack._id)}>Delete</Button>
+                                                <Button onClick={() => editPackHandler(pack._id, 'PAVEL PACK edited')}>Edit</Button>
+                                                <Button onClick={() => {}}>Learn</Button>
+                                            </div>
+
+                                        : <Button onClick={() => {}}>Learn</Button>
+                                    }
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
-            <PaginationBar/>
-        </div>
-    )
-}
-
-export const PaginationBar = () => {
-    return (
-        <div>
-            <Pagination count={10} variant="outlined"/>
         </div>
     )
 }
