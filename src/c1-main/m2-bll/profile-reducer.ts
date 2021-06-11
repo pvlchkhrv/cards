@@ -77,7 +77,7 @@ export const setErrorProfileAC = (error: string) => ({type: ERROR_MESSAGE, error
 export const setNewNameProfileAC = (name: string) => ({type: NEW_NAME_PROFILE, name} as const)
 export const setNewAvatarProfileAC = (avatar?: any) => ({type: NEW_AVATAR_PROFILE, avatar} as const)
 
-export const checkDataUserTC = () => {
+export const authTC = () => {
     return (dispatch: Dispatch) => {
         profileAPI.authProfileData()
             .then(res => {

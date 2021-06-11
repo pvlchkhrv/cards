@@ -1,12 +1,13 @@
-import React, {useEffect} from "react";
+import React, {ChangeEvent, useEffect} from "react";
 import Profile from "./Profile";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../m2-bll/store";
-import {ProfileDataType} from "../../m3-dal/profileAPI";
 import {PATH} from "../Routes";
-import { Redirect } from "react-router-dom";
-import {getAuthUserData, LoginInitialStateType} from "../../m2-bll/login-reducer";
-import {checkDataUserTC} from "../../m2-bll/profile-reducer";
+import {Redirect} from "react-router-dom";
+import {LoginInitialStateType, logOutTC} from "../../m2-bll/login-reducer";
+import {authTC, changeAvatarProfileTC, changeNameProfileTC, ProfileDataType} from "../../m2-bll/profile-reducer";
+import {useState} from "react";
+import {RequestStatusType} from "../../m2-bll/app-reducer";
 
 
 type ProfileContainerPropsType = {}
@@ -15,20 +16,55 @@ export const ProfileContainer: React.FC<ProfileContainerPropsType> = (props) => 
 
     const dispatch = useDispatch();
 
-    const userData = useSelector<AppRootStateType, ProfileDataType>(state => state.profile)
-    const isAuth = useSelector<AppRootStateType, LoginInitialStateType>(state => state.login)
+    // const userData = useSelector<AppRootStateType, ProfileDataType>(state => state.profile)
+    const auth = useSelector<AppRootStateType, LoginInitialStateType>(state => state.login)
+    const loading = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+    const [editMode, setEditMode] = useState(false)
+    const [name, setName] = useState('')
 
     useEffect(() => {
-        if (!userData.created) {
-            dispatch(checkDataUserTC());
+        if (!auth.user?.created) {
+            dispatch(authTC());
         }
     }, [])
 
-    if (!isAuth) {
-        return <Redirect to={PATH.LOGIN} />
+    if (!auth.user?.created) {
+        return <Redirect to={PATH.LOGIN}/>
+    }
+
+    const changeAvatarHandler = () => {
+        dispatch(changeAvatarProfileTC('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLZCQKk9AAsrHRGSrOciC3AdPFdncKU8bwYFDDJSvFrmbgIWDXgIWykL541TCARJ7sMPE&usqp=CAU')) ///загрузка аватара
+    }
+
+    const changeNameInputFocus = () => {
+        setEditMode(false)
+        dispatch(changeNameProfileTC(name))
+    }
+    const switchEditMode = () => {
+        setEditMode(true)
+    }
+
+    const setNewName = (newName: string) => {
+        setName(newName)
+    }
+    const onChangeNewNameHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setNewName(e.currentTarget.value)
+    }
+
+    const logOut = () => {
+        dispatch(logOutTC())
     }
 
     return (
-        <Profile userData={userData}/>
+        <Profile
+            auth={auth}
+            editMode={editMode}
+            changeAvatarHandler={changeAvatarHandler}
+            changeNameInputFocus={changeNameInputFocus}
+            switchEditMode={switchEditMode}
+            onChangeNewNameHandler={onChangeNewNameHandler}
+            setNewName={setNewName}
+            logOut={logOut}
+        />
     )
 }
