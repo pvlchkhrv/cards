@@ -25,12 +25,12 @@ export const CardPacksContainer: React.FC = () => {
     }, [dispatch]);
 
     const getAllPacksHandler = () => {
+        dispatch(setUserId(''));
         dispatch(getPacks());
         setIsMine(false)
     }
     const getUserPackHandler = () => {
-        debugger
-        setUserId(user._id);
+        dispatch(setUserId(user._id));
         dispatch(getPacks());
         setIsMine(true)
     }

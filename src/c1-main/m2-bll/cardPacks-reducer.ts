@@ -14,10 +14,14 @@ export const PacksInitState: PacksStateType = {
 
 export const packsReducer = (state: PacksStateType = PacksInitState, action: ActionsType): PacksStateType => {
     switch (action.type) {
+
         case SET_PACKS:
             return {...state, cardPacks: [...action.cardPacks]};
         case SET_USER_ID:
-            return {...state, packUser_id: action.userId};
+            return {
+                ...state,
+                packUser_id: action.userId
+            };
         default:
             return state;
     }
@@ -29,7 +33,6 @@ export const setUserId = (userId: string) => ({type: SET_USER_ID, userId} as con
 
 //Thunks
 export const getPacks = () => async (dispatch: Dispatch<ActionsType>, getState: () => AppRootStateType) => {
-    debugger
     dispatch(setAppStatus('loading'));
     const packUser_id = getState().packs.packUser_id;
     try {
