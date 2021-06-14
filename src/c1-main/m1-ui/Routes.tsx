@@ -16,7 +16,7 @@ export const PATH = {
     ERROR: '/error',
     RESTORE_PASSWORD: '/restore-password',
     SET_NEW_PASSWORD: '/set-new-password',
-    CARD_PACKS: '/card-packs',
+    CARD_PACKS: '/card-packs/:id/',
     TEST:'/test'
 
 }

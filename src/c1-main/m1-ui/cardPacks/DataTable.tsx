@@ -6,14 +6,16 @@ type DataTablePropsType = {
     packs: PackType []
     deletePackHandler: (packId: string) => void
     editPackHandler: (packId: string, title: string) => void
-    isMine: boolean
+    packUserId: string
+    userId: string
 }
 
 export const DataTable: React.FC<DataTablePropsType> = ({
                                                             packs,
                                                             deletePackHandler,
                                                             editPackHandler,
-                                                            isMine
+                                                            packUserId,
+                                                            userId
                                                         }) => {
     return (
         <div>
@@ -39,14 +41,17 @@ export const DataTable: React.FC<DataTablePropsType> = ({
                                 <TableCell align="center">{pack.created}</TableCell>
                                 <TableCell align="center">
                                     {
-                                        isMine
+                                        userId === pack.user_id
                                             ? <div>
                                                 <Button onClick={() => deletePackHandler(pack._id)}>Delete</Button>
-                                                <Button onClick={() => editPackHandler(pack._id, 'PAVEL PACK edited')}>Edit</Button>
-                                                <Button onClick={() => {}}>Learn</Button>
+                                                <Button
+                                                    onClick={() => editPackHandler(pack._id, 'PAVEL PACK edited')}>Edit</Button>
+                                                <Button onClick={() => {
+                                                }}>Learn</Button>
                                             </div>
 
-                                        : <Button onClick={() => {}}>Learn</Button>
+                                            : <Button onClick={() => {
+                                            }}>Learn</Button>
                                     }
                                 </TableCell>
                             </TableRow>

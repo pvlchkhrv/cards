@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {Slider, Typography} from '@material-ui/core';
+import {Slider} from '@material-ui/core';
+import s from './DoubleSlider.module.css'
 
 export const DoubleSlider = () => {
     function valuetext(value: number) {
@@ -14,10 +15,12 @@ export const DoubleSlider = () => {
     };
 
     return (
-        <div className={'s.root'}>
+        <div className={s.slider}>
             <Slider
                 value={value}
                 onChange={handleChange}
+                // min={}
+                // max={}
                 valueLabelDisplay="auto"
                 aria-labelledby="range-slider"
                 getAriaValueText={valuetext}

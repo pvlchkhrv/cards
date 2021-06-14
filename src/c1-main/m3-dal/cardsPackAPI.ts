@@ -2,9 +2,9 @@ import axios from 'axios';
 import {PackType} from '../m2-bll/cardPacks-reducer';
 
 
-
 export type GetPacksDataType = {
     cardPacks: PackType[];
+    cardPacksTotalCount: number
     error: string;
 }
 export type PacksPostDataType = {
@@ -36,10 +36,10 @@ const instance = axios.create({
 });
 
 export const packsAPI = {
-    getPacks(userId: string) {
-            return instance.get<GetPacksDataType>
-            (`/cards/pack?user_id=${userId}&page=${1}&pageCount=${10}&min=${1}&max=${10}&sortPacks='0updated'`)
-                .then(res => res.data);
+    getPacks(params: PacksParamsType) {
+        return instance.get<GetPacksDataType>
+        (`/cards/pack`, {params: {...params}})
+            .then(res => res.data);
     },
     addPack(title: string) {
         return instance.post('/cards/pack', {cardsPack: {name: title}})

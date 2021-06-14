@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ChangeEvent} from 'react';
 import {Button, ButtonGroup, Container, Grid, TextField,} from '@material-ui/core';
 import s from './CardPackagePage.module.css'
 import {DataTable} from './DataTable';
@@ -12,8 +12,15 @@ type CardPacksPropsType = {
     createPackHandler: (title: string) => void
     deletePackHandler: (packId: string) => void
     editPackHandler: (packId: string, title: string) => void
+    onChangePage: (e: React.ChangeEvent<unknown>, page: number) => void
+    onChangeItemsQuantity: (e: React.ChangeEventHandler<HTMLInputElement>, pageCount: number) => void
     packs: PackType[]
+    packUserId: string
+    userId: string
     isMine: boolean
+    pages: number
+    page: number
+    pageCount: number
 }
 
 
@@ -23,12 +30,18 @@ export const CardPacks: React.FC<CardPacksPropsType> = ({
                                                             createPackHandler,
                                                             deletePackHandler,
                                                             editPackHandler,
+                                                            onChangePage,
+                                                            onChangeItemsQuantity,
                                                             packs,
-                                                            isMine
+                                                            packUserId,
+                                                            userId,
+                                                            isMine,
+                                                            pages,
+                                                            page,
+                                                            pageCount
                                                         }) => {
 
     return (
-
         <>
             <Container fixed className={s.container}>
                 <Grid container>
@@ -67,9 +80,15 @@ export const CardPacks: React.FC<CardPacksPropsType> = ({
                         <DataTable packs={packs}
                                    deletePackHandler={deletePackHandler}
                                    editPackHandler={editPackHandler}
-                                   isMine={isMine}
+                                   packUserId={packUserId}
+                                   userId={userId}
                         />
-                        <PaginationBar/>
+                        <PaginationBar pages={pages}
+                                       page={page}
+                                       pageCount={pageCount}
+                                       onChangePage={onChangePage}
+                                       onChangeItemsQuantity={onChangeItemsQuantity}
+                        />
                     </Grid>
                 </Grid>
             </Container>
