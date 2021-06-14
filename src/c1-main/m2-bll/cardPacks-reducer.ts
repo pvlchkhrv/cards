@@ -60,11 +60,12 @@ export const setPageCount = (pageCount: number) => ({type: SET_PAGE_COUNT, pageC
 export const setPacksTotalCount = (totalCount: number) => ({type: SET_PACKS_TOTAL_COUNT, totalCount} as const);
 
 //Thunks
-export const getPacks = (params: PacksParamsType) => async (dispatch: Dispatch<ActionsType>, getState: () => AppRootStateType) => {
+export const getPacks = () => async (dispatch: Dispatch<ActionsType>, getState: () => AppRootStateType) => {
     dispatch(setAppStatus('loading'));
     const packUser_id = getState().packs.packUser_id;
+    const {page, pageCount, minCardsCount, maxCardsCount} = getState().packs.packsData
     try {
-        const response = await packsAPI.getPacks(params);
+        const response = await packsAPI.getPacks({user_id: packUser_id, pageCount, page, min: minCardsCount, max: maxCardsCount});
         dispatch(setPacks(response.cardPacks));
         dispatch(setPacksTotalCount(response.cardPacksTotalCount));
         dispatch(setAppStatus('succeed'));
@@ -75,11 +76,11 @@ export const getPacks = (params: PacksParamsType) => async (dispatch: Dispatch<A
     }
 };
 
-export const createPack = (title: string) => async (dispatch: Dispatch<any>) => {
+export const createPack = (title: string) => async (getState: () => AppRootStateType, dispatch: Dispatch<any>) => {
     dispatch(setAppStatus('loading'));
     try {
         const response = await packsAPI.addPack(title);
-        dispatch(getPacks({}));
+        dispatch(getPacks());
         dispatch(setAppStatus('succeed'));
         console.log(response);
     } catch (e) {
@@ -92,7 +93,7 @@ export const deletePackOnServer = (id: string): ThunkAction<void, AppRootStateTy
     dispatch(setAppStatus('loading'));
     try {
         const response = packsAPI.deletePack(id);
-        dispatch(getPacks({}));
+        dispatch(getPacks());
         dispatch(setAppStatus('succeed'));
         console.log(response);
     } catch (e) {
@@ -105,7 +106,7 @@ export const updatePackTitleOnServer = (id: string, title: string) => (dispatch:
     dispatch(setAppStatus('loading'));
     try {
         const response = packsAPI.updatePack(id, title);
-        dispatch(getPacks({}));
+        dispatch(getPacks());
         dispatch(setAppStatus('succeed'));
         console.log(response);
     } catch (e) {

@@ -30,18 +30,18 @@ export const CardPacksContainer: React.FC = () => {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(getPacks({}));
+        dispatch(getPacks());
     }, [dispatch]);
 
     const getAllPacksHandler = () => {
         dispatch(setUserId(''));
-        dispatch(getPacks({}));
+        dispatch(getPacks());
         setIsMine(false);
         setPage(1);
     }
     const getUserPackHandler = () => {
         dispatch(setUserId(user._id));
-        dispatch(getPacks({user_id: user._id}));
+        dispatch(getPacks());
         setIsMine(true);
         setPage(1);
     }
@@ -56,10 +56,10 @@ export const CardPacksContainer: React.FC = () => {
     }
     const onChangePageHandler = (e: React.ChangeEvent<unknown>, value: number) => {
         dispatch(setPage(value));
-        dispatch(getPacks({page: value, user_id: packUserId}));
+        dispatch(getPacks());
     }
     const onChangePageCountHandler = (e: React.ChangeEventHandler<HTMLInputElement>, pageCount: number) => {
-        dispatch(getPacks({pageCount}));
+        dispatch(getPacks());
     }
 
     const onSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -67,7 +67,7 @@ export const CardPacksContainer: React.FC = () => {
     }
 
     const onChangeSliderHandler = (e: any, newValue: number | number[]) => {
-        set
+
     }
 
 
