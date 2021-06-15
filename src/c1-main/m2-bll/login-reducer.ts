@@ -1,4 +1,4 @@
-import {authAPI} from "../m3-dal/LoginAPI";
+import {authAPI, LoginParametersType} from "../m3-dal/LoginAPI";
 import {Dispatch} from "redux";
 import {setAppStatus} from "./app-reducer";
 import {setErrorProfileAC} from "./profile-reducer";

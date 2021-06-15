@@ -17,6 +17,7 @@ export const PATH = {
     ERROR: '/error',
     RESTORE_PASSWORD: '/restore-password',
     SET_NEW_PASSWORD: '/set-new-password',
+    CARD_PACKS: '/card-packs/:id/',
     TEST:'/test'
 
 }
@@ -31,6 +32,8 @@ export const Routes: React.FC = () => {
                 <Route path={PATH.REGISTER} render={() => <RegisterPage/>}/>
                 <Route path={PATH.PROFILE} render={() => <ProfileContainer/>}/>
                 <Route path={PATH.RESTORE_PASSWORD} render={() => <RestorePasswordPage/>}/>
+                <Route path={PATH.SET_NEW_PASSWORD} render={() => <NewPassword/>}/>
+                <Route path={PATH.CARD_PACKS} render={() => <CardPacksPage/>}/>
                 <Route path={PATH.SET_NEW_PASSWORD} render={() => <NewPasswordContainer/>}/>
                 <Route path={PATH.TEST} render={() => <Test/>}/>
                 <Route render={() => <Error404/>}/>
