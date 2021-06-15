@@ -23,12 +23,13 @@ export const CardPacksContainer: React.FC = () => {
     } = useSelector<AppRootStateType, any>(state => state.packs.packsData);
     const packUserId = useSelector<AppRootStateType, string>(state => state.packs.packUser_id);
     const user = useSelector<AppRootStateType, any>(state => state.login.user);
-    const isAuth = useSelector<AppRootStateType, boolean>(state => state.login.isAuth);
+    const isAuth = useSelector<AppRootStateType, boolean>(state => state.app.isAuth);
     const [isMine, setIsMine] = useState(!!packUserId);
     // const {params} = useParams();
     const pages = Math.ceil(cardPacksTotalCount / pageCount);
 
     const dispatch = useDispatch();
+
     useEffect(() => {
         dispatch(getPacks());
     }, [dispatch]);
@@ -69,7 +70,6 @@ export const CardPacksContainer: React.FC = () => {
     const onChangeSliderHandler = (e: any, newValue: number | number[]) => {
 
     }
-
 
     if (!isAuth) {
         return <Redirect to={'/login'}/>

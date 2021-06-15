@@ -1,7 +1,7 @@
-import {authAPI, LoginParametersType} from "../m3-dal/LoginAPI";
 import {Dispatch} from "redux";
-import {setAppStatus} from "./app-reducer";
+import {setAppIsAuth, setAppStatus} from "./app-reducer";
 import {setErrorProfileAC} from "./profile-reducer";
+import {authAPI} from '../m3-dal/authAPI';
 
 const SET_USER_DATA = 'SET_USER_DATA';
 const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE';
@@ -22,22 +22,22 @@ export type UserDataType = {
     error?: string
 }
 
-export type LoginInitialStateType = typeof initialState;
+export type LoginInitialStateType = typeof LoginInitialState;
 
-const initialState = {
+const LoginInitialState = {
     user: null as UserDataType | null,
     errorMessage: null as string | null,
     loginButtonDisable: false,
     logOutInfo: null as string | null
 };
 
-type ActionsType =
+export type LoginActionsType =
     | ReturnType<typeof setAuthUserDataAC>
     | ReturnType<typeof setErrorMessageAC>
     | ReturnType<typeof loginButtonDisableAC>
     | ReturnType<typeof logOutAC>
 
-export const loginReducer = (state: LoginInitialStateType = initialState, action: ActionsType): LoginInitialStateType => {
+export const loginReducer = (state: LoginInitialStateType = LoginInitialState, action: LoginActionsType): LoginInitialStateType => {
     switch (action.type) {
         case SET_USER_DATA:
             return {
@@ -78,6 +78,7 @@ export const getAuthUserData = (email: string, password: string, rememberMe: boo
         .then(res => {
             dispatch(setAuthUserDataAC(res.data))
             dispatch(loginButtonDisableAC(false))
+            setAppIsAuth(true)
         })
         .catch((e) => {
             dispatch(setErrorMessageAC(e.response
@@ -85,16 +86,16 @@ export const getAuthUserData = (email: string, password: string, rememberMe: boo
                 : (e.message + ', more details in the console')
             ))
             dispatch(loginButtonDisableAC(false))
+            setAppIsAuth(false)
         }).finally(() => {
         dispatch(setAppStatus('succeed'))
     })
 }
-
 export const logOutTC = () => (dispatch: Dispatch) => {
     authAPI.logout()
         .then(res => {
-            dispatch(logOutAC(res.data))
-            dispatch(setAuthUserDataAC(null))
+                dispatch(logOutAC(res.data))
+                dispatch(setAuthUserDataAC(null))
             }
         )
         .catch((e) => {

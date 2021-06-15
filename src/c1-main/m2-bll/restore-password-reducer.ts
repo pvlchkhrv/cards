@@ -12,7 +12,7 @@ const initialState = {
     errorMessage: '',
 }
 
-export const restorePasswordReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
+export const restorePasswordReducer = (state: InitialStateType = initialState, action: RestoreActionsType): InitialStateType => {
     switch (action.type) {
         case SET_IS_REGISTERED: return {...state, isRegistered: action.isRegistered};
         case SET_ERROR_MESSAGE: return {...state, errorMessage: action.errorMessage};
@@ -27,24 +27,23 @@ export const setIsRegistered = (isRegistered: boolean) => ({type: SET_IS_REGISTE
 export const setErrorMessage = (errorMessage: string) => ({type: SET_ERROR_MESSAGE, errorMessage} as const);
 
 //Thunks
-export const restorePasswordTC = (email: string) => (dispatch: Dispatch<ActionsType>) => {
+export const restorePasswordTC = (email: string) => (dispatch: Dispatch<RestoreActionsType>) => {
     dispatch(setAppStatus('loading'));
     restorePasswordAPI.restorePassword(email)
         .then(res => {
             dispatch(setIsRegistered(true));
             dispatch(setSuccessMessage(res.data.info));
             dispatch(setAppStatus('succeed'));
-            dispatch(setAppError(false));
         })
-        .catch((error) => {
+        .catch((e) => {
             // dispatch(setIsFetching(true));
             dispatch(setAppStatus('failed'));
-            dispatch(setAppError(true));
-            dispatch(setErrorMessage(error.response.data.error));
+            dispatch(setAppError(e.message));
+            // dispatch(setErrorMessage(e.response.data.error));
             dispatch(setIsRegistered(false))
         })
 }
-export const pingServerTC = () => (dispatch: Dispatch<ActionsType>) => {
+export const pingServerTC = () => (dispatch: Dispatch<RestoreActionsType>) => {
     restorePasswordAPI.ping()
         .then(res => {
             console.log(res.data);
@@ -52,7 +51,7 @@ export const pingServerTC = () => (dispatch: Dispatch<ActionsType>) => {
 }
 
 //Types
-type ActionsType =
+type RestoreActionsType =
     | ReturnType<typeof setAppError>
     | ReturnType<typeof setAppStatus>
     | ReturnType<typeof setIsRegistered>

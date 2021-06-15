@@ -1,5 +1,5 @@
 import {applyMiddleware, combineReducers, createStore} from 'redux';
-import {loginReducer} from './login-reducer';
+import {LoginActionsType, loginReducer} from './login-reducer';
 import {registerReducer} from './register-reducer';
 import {profileReducer} from './profile-reducer';
 import {restorePasswordReducer} from './restore-password-reducer';
@@ -24,4 +24,6 @@ export const store = createStore(rootReducer, applyMiddleware(thunk));
 // @ts-ignore
 window.store = store;
 
-export type AppRootStateType = ReturnType<typeof rootReducer>
+export type AppRootStateType = ReturnType<typeof rootReducer>;
+export type AppRootActionsType =
+    | LoginActionsType

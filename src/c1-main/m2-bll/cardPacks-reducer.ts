@@ -71,7 +71,7 @@ export const getPacks = () => async (dispatch: Dispatch<ActionsType>, getState: 
         dispatch(setAppStatus('succeed'));
         console.log(response);
     } catch (e) {
-        dispatch(setAppError(true));
+        dispatch(setAppError(e.message));
         dispatch(setAppStatus('failed'));
     }
 };
@@ -82,9 +82,8 @@ export const createPack = (title: string) => async (getState: () => AppRootState
         const response = await packsAPI.addPack(title);
         dispatch(getPacks());
         dispatch(setAppStatus('succeed'));
-        console.log(response);
     } catch (e) {
-        dispatch(setAppError(true));
+        dispatch(setAppError(e.message));
         dispatch(setAppStatus('failed'));
     }
 };
@@ -95,9 +94,8 @@ export const deletePackOnServer = (id: string): ThunkAction<void, AppRootStateTy
         const response = packsAPI.deletePack(id);
         dispatch(getPacks());
         dispatch(setAppStatus('succeed'));
-        console.log(response);
     } catch (e) {
-        dispatch(setAppError(true));
+        dispatch(setAppError(e.message));
         dispatch(setAppStatus('failed'));
     }
 }
@@ -110,7 +108,7 @@ export const updatePackTitleOnServer = (id: string, title: string) => (dispatch:
         dispatch(setAppStatus('succeed'));
         console.log(response);
     } catch (e) {
-        dispatch(setAppError(true));
+        dispatch(setAppError(e.message));
         dispatch(setAppStatus('failed'));
     }
 }

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Login from "./Login";
 import {AppRootStateType} from "../../m2-bll/store";
@@ -16,7 +16,7 @@ const LoginContainer: React.FC<LoginContainerPropsType> = (props: any) => {
 
     const dispatch = useDispatch();
     const [email, setEmail] = useState<string>('panich2303@gmail.com');
-    const [password, setPassword] = useState<string>('1234567');
+    const [password, setPassword] = useState<string>('12345678');
     const [rememberMe, setRememberMe] = useState<boolean>(false);
 
     useEffect(() => {
