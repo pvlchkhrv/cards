@@ -7,8 +7,10 @@ import {RequestStatusType} from "../../m2-bll/app-reducer";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import SortButtons from "./SortButtons";
 
 interface TableProps {
+    disable: boolean
     cardsObj: AuthInitialStateType
     appStatus: RequestStatusType
     onDeleteClickHandler: (cardPackId: string) => void
@@ -19,6 +21,7 @@ interface TableProps {
 
 export const TableData = (
     {
+        disable,
         onDeleteClickHandler,
         onUpdateClickHandler,
         appStatus,
@@ -40,19 +43,14 @@ export const TableData = (
                             <TableCell align="center">Answer</TableCell>
                             <TableCell align="center">Grade</TableCell>
                             <TableCell align="center">Updated
-                                <IconButton onClick={sortDownClick} size="small">
-                                    <ArrowUpwardIcon fontSize="inherit"/>
-                                </IconButton>
-                                <IconButton onClick={sortUpClick} size="small">
-                                    <ArrowDownwardIcon fontSize="inherit"/>
-                                </IconButton>
+                                <SortButtons sortUpClick={sortUpClick} sortDownClick={sortDownClick}/>
                             </TableCell>
                             <TableCell align="center">Rating</TableCell>
                             <TableCell align="center">Action</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {cardsObj.cards.map((card) => (
+                        {cardsObj.cardsData.cards.map((card) => (
                             <TableRow key={card._id}>
                                 <TableCell component="th">{card.question}</TableCell>
                                 <TableCell align="center">{card.answer}</TableCell>
@@ -60,11 +58,14 @@ export const TableData = (
                                 <TableCell align="center">{card.updated}</TableCell>
                                 <TableCell align="center">{card.rating}</TableCell>
                                 <TableCell align="center">
-                                    <Button variant={'contained'} color={'primary'} size={'medium'}
+                                    <Button disabled={disable} variant={'contained'} color={'primary'}
+                                            size={'medium'}
                                             onClick={() => onUpdateClickHandler(card._id)}>EDIT</Button>
-                                    <Button variant={'contained'} color={'secondary'} size={'medium'} onClick={() => {
-                                        onDeleteClickHandler(card._id)
-                                    }}>DELETE</Button>
+                                    <Button disabled={disable} variant={'contained'} color={'secondary'}
+                                            size={'medium'}
+                                            onClick={() => {
+                                                onDeleteClickHandler(card._id)
+                                            }}>DELETE</Button>
                                 </TableCell>
                             </TableRow>
                         ))}

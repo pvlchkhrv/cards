@@ -21,12 +21,16 @@ const Login: React.FC<LoginPropsType> = (
     return (
         <div>
             <h3> LOGIN </h3>
+            <span>nya-admin@nya.nya</span>
+
             <div>
+
                 <InputText type={'email'}
                            placeholder={'Enter email'}
                            onChangeText={onChangeEmail}
                 />
             </div>
+            <span>1qazxcvBG</span>
             <div>
                 <InputText type={'password'}
                            placeholder={'Enter password'}

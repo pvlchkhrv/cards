@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 
 export const instance = axios.create({
     baseURL: 'https://neko-back.herokuapp.com/2.0/',
@@ -16,7 +16,7 @@ export const cardsAPI = {
     deleteCard(cardId: string) {
         return instance.delete(`cards/card?id=${cardId}`,)
     },
-    createCard(packId = "5fe66bf32f93dc434098cdd7") {
+    createCard(packId:string) {
         return instance.post(`cards/card`, {card: {cardsPack_id: packId}})
     },
     updateCard(cardId: string) {

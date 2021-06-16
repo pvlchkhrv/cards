@@ -1,82 +1,82 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../m2-bll/store";
-import {Button, ButtonGroup, Container, Grid, TextField,} from '@material-ui/core'
+import {Button, Container, TextField,} from '@material-ui/core'
 import s from './CardsPage.module.css'
 import {
     aboutMeThunk,
-    AuthInitialStateType,
+    CardsStateType,
     createCardThunk,
     deleteCardThunk,
-    getCardsThunk, setPageCount, setQuestion,
+    getCardsThunk,
+    setNumberPage,
+    setPageCount,
+    setQuestion,
+    setSortType,
     updateCardThunk
 } from "../../m2-bll/cards-reducer";
 import {TableData} from './Table';
 import {RequestStatusType} from "../../m2-bll/app-reducer";
-import Cards from "./Cards";
-import {Pagination} from "@material-ui/lab";
-import TablePagination from "@material-ui/core/TablePagination";
-import { useParams } from 'react-router-dom';
+import {Redirect, useParams} from 'react-router-dom';
+import Paginator from "./Paginator";
 
 const CardsPageContainer = () => {
-    //5fa566f77b2f370004ef8cec
     console.log("CardsPageContainer")
-    const [value, setValue] = useState("")
-    const dispatch = useDispatch()
-    const {cardPackID} = useParams<{cardPackID:string}>();
-
     const searchValue = useSelector<AppRootStateType, string>(state => state.cards.searchValue);
-    const page = useSelector<AppRootStateType, number>(state => state.cards.page);
-    const pageCount = useSelector<AppRootStateType, number>(state => state.cards.pageCount);
-    const cardsTotalCount = useSelector<AppRootStateType, number>(state => state.cards.cardsTotalCount);
+    const [value, setValue] = useState(searchValue)
+    const dispatch = useDispatch()
+    const {cardPackID} = useParams<{ cardPackID: string }>();
+    const page = useSelector<AppRootStateType, number>(state => state.cards.cardsData.page);
+    const pageCount = useSelector<AppRootStateType, number>(state => state.cards.cardsData.pageCount);
+    const cardsTotalCount = useSelector<AppRootStateType, number>(state => state.cards.cardsData.cardsTotalCount);
     const isAuth = useSelector<AppRootStateType, boolean>(state => state.login.isAuth);
     const appStatus = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status);
-    const cardsObj = useSelector<AppRootStateType, AuthInitialStateType>(state => state.cards);
+    const cardsObj = useSelector<AppRootStateType, CardsStateType>(state => state.cards);
+    const user = useSelector<AppRootStateType, any>(state => state.login.user);
+    const userId = useSelector<AppRootStateType, string>(state => state.cards.cardsData.packUserId);
+
     const onDeleteClickHandler = (id: string) => {
-        dispatch(deleteCardThunk("", cardPackID, "", page, pageCount, id));
+        dispatch(deleteCardThunk(id, cardPackID));
     };
     const onCreateClickHandler = () => {
-        dispatch(createCardThunk("", cardPackID, "", page, pageCount));
+        dispatch(createCardThunk(cardPackID));
     };
     const onUpdateClickHandler = (id: string) => {
-        dispatch(updateCardThunk("", cardPackID, "", page, pageCount, id));
+        dispatch(updateCardThunk(id, cardPackID));
     };
     const searchClick = () => {
         dispatch(setQuestion(value))
-        dispatch(getCardsThunk(value, cardPackID, "", page, pageCount))
+        dispatch(getCardsThunk(cardPackID))
     }
     const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
         setValue(e.currentTarget.value)
     }
     const sortUpClick = () => {
-        dispatch(getCardsThunk("", cardPackID, "0updated", page, pageCount))
+        dispatch(setSortType("0updated"))
+        dispatch(getCardsThunk(cardPackID))
     }
     const sortDownClick = () => {
-        dispatch(getCardsThunk("", cardPackID, "1updated", page, pageCount))
+        dispatch(setSortType("1updated"))
+        dispatch(getCardsThunk(cardPackID))
     }
     const handleChangePage = (event: unknown, newPage: number) => {
-        dispatch(getCardsThunk("", cardPackID, "", newPage + 1, pageCount))
+        dispatch(setNumberPage(newPage + 1))
+        dispatch(getCardsThunk(cardPackID))// newPage + 1, pageCount
     };
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(setPageCount(+event.target.value))
-        dispatch(getCardsThunk("", cardPackID, "", page, +event.target.value));
-        console.log(+event.target.value)
+        dispatch(getCardsThunk(cardPackID));//, page, +event.target.value
     };
     useEffect(() => {
         if (!isAuth) {
             dispatch(aboutMeThunk())
         }
-        dispatch(getCardsThunk("", cardPackID, "", page, pageCount))
+        dispatch(getCardsThunk(cardPackID))
     }, [isAuth, dispatch])
+    let disable = (user._id === userId) ? false : true
 
     return (
         <div className={s.main}>
-            <div>
-                <input type="text" value={value} onChange={onChangeInput}/>
-                <button onClick={sortUpClick}>UP</button>
-                <button onClick={sortDownClick}>DOWn</button>
-                <button onClick={searchClick}>SEARCH</button>
-            </div>
             <Container maxWidth="lg" className={s.container}>
                 <h3>Cards List</h3>
                 <div className={s.search}>
@@ -90,13 +90,14 @@ const CardsPageContainer = () => {
                                 size={'medium'}>Search</Button>
                     </div>
                 </div>
-
                 <div className={s.addButton}>
                     <Button
                         onClick={onCreateClickHandler} variant={'contained'} color={'primary'} size={'medium'}
+                        disabled={disable}
                     >Add New Card</Button>
                 </div>
                 <TableData
+                    disable={disable}
                     onDeleteClickHandler={onDeleteClickHandler}
                     onUpdateClickHandler={onUpdateClickHandler}
                     cardsObj={cardsObj}
@@ -104,24 +105,9 @@ const CardsPageContainer = () => {
                     sortDownClick={sortDownClick}
                     sortUpClick={sortUpClick}/>
 
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 15]}
-                    component="div"
-                    count={cardsTotalCount}
-                    rowsPerPage={pageCount}
-                    page={page - 1}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                />
+                <Paginator cardsTotalCount={cardsTotalCount} page={page} pageCount={pageCount}
+                           handleChangePage={handleChangePage} handleChangeRowsPerPage={handleChangeRowsPerPage}/>
             </Container>
-            {/*<Pagination/>*/}
-            {/*<Cards/>*/}
-            {/*<TableData*/}
-            {/*    onCreateClickHandler={onCreateClickHandler}*/}
-            {/*    onDeleteClickHandler={onDeleteClickHandler}*/}
-            {/*    onUpdateClickHandler={onUpdateClickHandler}*/}
-            {/*    cardsObj={cardsObj}*/}
-            {/*    appStatus={appStatus}/>*/}
 
         </div>
     )

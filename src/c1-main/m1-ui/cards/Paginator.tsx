@@ -1,29 +1,33 @@
 import React from 'react';
 import TablePagination from '@material-ui/core/TablePagination';
 
-export default function TablePaginationDemo() {
-    const [page, setPage] = React.useState(2);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+interface PaginatorProps {
+    cardsTotalCount: number
+    pageCount: number
+    page: number
+    handleChangePage: (event: unknown, newPage: number) => void
+    handleChangeRowsPerPage: (event: React.ChangeEvent<HTMLInputElement>) => void
+}
 
-    const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
-        setPage(newPage);
-    };
+const Paginator = ({
+                       cardsTotalCount,
+                       pageCount,
+                       page,
+                       handleChangePage,
+                       handleChangeRowsPerPage
 
-    const handleChangeRowsPerPage = (
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    ) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
-
-    return (
+                   }:PaginatorProps) => {
+    return <>
         <TablePagination
+            rowsPerPageOptions={[5, 10, 15]}
             component="div"
-            count={100}
-            page={page}
+            count={cardsTotalCount}
+            rowsPerPage={pageCount}
+            page={page - 1}
             onChangePage={handleChangePage}
-            rowsPerPage={rowsPerPage}
             onChangeRowsPerPage={handleChangeRowsPerPage}
         />
-    );
+    </>
 }
+
+export default Paginator;

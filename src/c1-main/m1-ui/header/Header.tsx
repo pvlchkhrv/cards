@@ -11,7 +11,7 @@ const Header: React.FC = () => {
             <NavLink to={PATH.PROFILE}>Profile</NavLink>
             <NavLink to={PATH.RESTORE_PASSWORD}>Restore Password</NavLink>
             <NavLink to={PATH.SET_NEW_PASSWORD}>Set New Password</NavLink>
-            <NavLink to={PATH.CARDS+"/1"}>CARDS</NavLink>
+            <NavLink to={PATH.CARDS+"/60c7b173761d1e00046a0914"}>CARDS</NavLink>
             <NavLink to={PATH.TEST}>Demo</NavLink>
         </div>
     )
