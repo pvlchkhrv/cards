@@ -15,7 +15,6 @@ interface CardsProps {
     onUpdateClickHandler: (id: string) => void
 }
 const Cards = () => {
-    const isAuth = useSelector<AppRootStateType, boolean>(state => state.login.isAuth);
     const appStatus = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status);
     // const onclickHandler = () => {
     //     dispatch(getCardsThunk())

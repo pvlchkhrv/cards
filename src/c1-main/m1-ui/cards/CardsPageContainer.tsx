@@ -29,7 +29,7 @@ const CardsPageContainer = () => {
     const page = useSelector<AppRootStateType, number>(state => state.cards.cardsData.page);
     const pageCount = useSelector<AppRootStateType, number>(state => state.cards.cardsData.pageCount);
     const cardsTotalCount = useSelector<AppRootStateType, number>(state => state.cards.cardsData.cardsTotalCount);
-    const isAuth = useSelector<AppRootStateType, boolean>(state => state.login.isAuth);
+    const isAuth = useSelector<AppRootStateType, boolean>(state => state.app.isAuth);
     const appStatus = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status);
     const cardsObj = useSelector<AppRootStateType, CardsStateType>(state => state.cards);
     const user = useSelector<AppRootStateType, any>(state => state.login.user);
