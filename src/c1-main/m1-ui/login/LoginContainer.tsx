@@ -15,8 +15,8 @@ const LoginContainer: React.FC<LoginContainerPropsType> = (props: any) => {
     const loading = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status);
 
     const dispatch = useDispatch();
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+    const [email, setEmail] = useState<string>('panich2303@gmail.com');
+    const [password, setPassword] = useState<string>('12345678');
     const [rememberMe, setRememberMe] = useState<boolean>(false);
 
     useEffect(() => {

@@ -1,7 +1,8 @@
 import {profileAPI} from "../m3-dal/profileAPI";
 import {Dispatch} from "redux";
 import {setAuthUserDataAC} from "./login-reducer";
-import {setAppStatus} from "./app-reducer";
+import {setAppIsAuth, setAppStatus} from "./app-reducer";
+import {authAPI} from '../m3-dal/authAPI';
 
 const PROFILE_DATA = 'PROFILE_DATA';
 const ERROR_MESSAGE = 'ERROR_MESSAGE';
@@ -22,26 +23,25 @@ export type ProfileDataType = {
     verified: boolean
     __v: number
     _id: string
-    error?: string;
 }
 export type ChangeDataProfile = {
     updatedUser: ProfileDataType
     error?: string
 }
 
-export type ProfileInitialStateType = typeof initialState
+export type ProfileInitialStateType = typeof ProfileInitialState
 
-let initialState = {
+const ProfileInitialState = {
     profileData: {} as ProfileDataType,      //null as ProfileDataType | null
     errorMessage: null as string | null
 }
 
-export type ProfileActionType = ReturnType<typeof setProfileDataAC>
+export type ProfileActionsType = ReturnType<typeof setProfileDataAC>
     | ReturnType<typeof setErrorProfileAC>
     | ReturnType<typeof setNewNameProfileAC>
     | ReturnType<typeof setNewAvatarProfileAC>
 
-export const profileReducer = (state: any = initialState, action: any) => {
+export const profileReducer = (state: ProfileInitialStateType = ProfileInitialState, action: ProfileActionsType) => {
     switch (action.type) {
         case PROFILE_DATA:
             return {
@@ -79,16 +79,17 @@ export const setNewAvatarProfileAC = (avatar?: any) => ({type: NEW_AVATAR_PROFIL
 
 export const authTC = () => {
     return (dispatch: Dispatch) => {
-        profileAPI.authProfileData()
+        authAPI.authMe()
             .then(res => {
-                dispatch(setProfileDataAC(res.data))
                 dispatch(setAuthUserDataAC(res.data))
+                dispatch(setAppIsAuth(true))
             })
             .catch((e) => {
                 dispatch(setErrorProfileAC(e.response
                     ? e.response.data.error
                     : (e.message + ', more details in the console')
                 ))
+                dispatch(setAppIsAuth(false))
             })
     }
 }

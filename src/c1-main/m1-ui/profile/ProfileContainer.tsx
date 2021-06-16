@@ -5,7 +5,7 @@ import {AppRootStateType} from "../../m2-bll/store";
 import {PATH} from "../Routes";
 import {Redirect} from "react-router-dom";
 import {LoginInitialStateType, logOutTC} from "../../m2-bll/login-reducer";
-import {authTC, changeAvatarProfileTC, changeNameProfileTC, ProfileDataType} from "../../m2-bll/profile-reducer";
+import {authTC, changeAvatarProfileTC, changeNameProfileTC} from "../../m2-bll/profile-reducer";
 import {useState} from "react";
 import {RequestStatusType} from "../../m2-bll/app-reducer";
 

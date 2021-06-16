@@ -1,37 +1,42 @@
+const SET_STATUS = 'APP/SET-STATUS';
+const SET_ERROR = 'APP/SET-ERROR';
+const SET_IS_AUTH = 'APP/SET-IS-AUTH';
+
 const initialState: InitialStateType = {
     status: 'idle',
-    isError: false
+    error: '',
+    isAuth: false
 }
 
-export const appReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
+export const appReducer = (state: InitialStateType = initialState, action: AppActionsType): InitialStateType => {
     switch (action.type) {
-        case 'APP/SET-STATUS':
+        case SET_STATUS:
             return {...state, status: action.status}
-        case 'APP/SET-ERROR':
-            return {...state, isError: action.isError}
+        case SET_ERROR:
+            return {...state, error: action.error}
+        case SET_IS_AUTH:
+            return { ...state, isAuth: action.isAuth}
         default:
             return {...state}
     }
 }
 
-export const setAppError = (isError: boolean) => ({ type: 'APP/SET-ERROR', isError } as const);
-export const setAppStatus = (status:  RequestStatusType) => ({ type: 'APP/SET-STATUS', status } as const);
-
-// thunk
-
+export const setAppError = (error: string) => ({type: SET_ERROR, error} as const);
+export const setAppStatus = (status: RequestStatusType) => ({type: SET_STATUS, status} as const);
+export const setAppIsAuth = (isAuth: boolean) => ({type: SET_IS_AUTH, isAuth} as const);
 
 // types
-export type SetAppErrorActionType = ReturnType<typeof setAppError>
-export type SetAppStatusActionType = ReturnType<typeof setAppStatus>
+export type SetAppErrorActionType = ReturnType<typeof setAppError>;
+export type SetAppStatusActionType = ReturnType<typeof setAppStatus>;
 
-type ActionsType =
-    | SetAppErrorActionType
-    | SetAppStatusActionType
+type AppActionsType =
+    | ReturnType<typeof setAppError>
+    | ReturnType<typeof setAppStatus>
+    | ReturnType<typeof setAppIsAuth>
 
-export type RequestStatusType =  'idle' | 'loading' | 'succeed' | 'failed'
-
+export type RequestStatusType = 'idle' | 'loading' | 'succeed' | 'failed'
 export type InitialStateType = {
     status: RequestStatusType
-    isError: boolean
-
+    error: string
+    isAuth: boolean
 }

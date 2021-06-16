@@ -10,5 +10,5 @@ export const profileAPI = {
     },
     changeNameProfile(name: string) {
         return instance.put<ChangeDataProfile>(`auth/me`, {name})
-    }
+    },
 };

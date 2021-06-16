@@ -6,7 +6,7 @@ export type SetPasswordActionType = ReturnType<typeof setErrorMessagedAC> | Retu
 export type SetPasswordInitialStateType = typeof initialState
 
 const initialState = {
-    error: "",
+    error: '',
     isSuccessful: false
 };
 
