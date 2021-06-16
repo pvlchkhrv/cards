@@ -2,7 +2,6 @@ import React, {ChangeEvent, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from '../../m2-bll/store';
 import {CardPacks} from './CardPacks';
-import {Redirect} from 'react-router-dom';
 import {
     createPack,
     deletePackOnServer,
@@ -71,9 +70,9 @@ export const CardPacksContainer: React.FC = () => {
 
     }
 
-    if (!isAuth) {
-        return <Redirect to={'/login'}/>
-    }
+    // if (!isAuth) {
+    //     return <Redirect to={'/login'}/>
+    // }
     return (
         <CardPacks getAllPacksHandler={getAllPacksHandler}
                    getUserPackHandler={getUserPackHandler}
