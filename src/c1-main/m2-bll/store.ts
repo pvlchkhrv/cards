@@ -9,6 +9,7 @@ import thunk from 'redux-thunk';
 import {appReducer} from './app-reducer';
 import {packsReducer} from './cardPacks-reducer';
 import cardsReducer from "./cards-reducer";
+import { learnReducer } from './learn-reducer';
 
 const rootReducer = combineReducers({
     app: appReducer,
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
     packs: packsReducer,
     test: testReducer,
     cards: cardsReducer,
+    learn: learnReducer
 });
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));
