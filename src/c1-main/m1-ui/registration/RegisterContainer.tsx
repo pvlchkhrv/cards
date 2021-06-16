@@ -34,5 +34,4 @@ const RegisterContainer: React.FC = () => {
         </div>
     )
 }
-
 export default RegisterContainer;
