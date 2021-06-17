@@ -1,3 +1,8 @@
+import {learningAPI} from "../m3-dal/learnPageAPI";
+import {Dispatch} from "redux";
+import {AppRootStateType} from "./store";
+import {getCardsThunk} from "./cards-reducer";
+
 const SET_ANSWER_CORRECT = 'SET_ANSWER_CORRECT';
 const SET_DISPLAY_ANSWER = 'SET_DISPLAY_ANSWER';
 const SET_CARD_TO_LEARN = 'SET_CARD_TO_LEARN';
@@ -46,14 +51,8 @@ export const learnReducer = (state: LearnInitialStateType = LearnInitialState, a
 }
 
 // ACs
-export const setAnswerCorrect = (answerCorrect: boolean | undefined) => ({
-    type: SET_ANSWER_CORRECT,
-    answerCorrect
-}) as const;
-export const setDisplayAnswer = (displayAnswer: boolean | undefined) => ({
-    type: SET_DISPLAY_ANSWER,
-    displayAnswer
-}) as const;
+export const setAnswerCorrect = (answerCorrect: boolean | undefined) => ({type: SET_ANSWER_CORRECT, answerCorrect}) as const;
+export const setDisplayAnswer = (displayAnswer: boolean | undefined) => ({type: SET_DISPLAY_ANSWER, displayAnswer}) as const;
 export const setCardToLearn = (card_id: string,
                                question: string,
                                answer: string,
@@ -61,3 +60,10 @@ export const setCardToLearn = (card_id: string,
                                answerImg?: string
 ) => ({type: SET_CARD_TO_LEARN, card_id, question, answer, questionImg, answerImg}) as const;
 
+// Thunk
+export const updateGradeTC = (card_id: string, grade: number): AppRootStateType => async (dispatch: Dispatch) => {
+    const response = await learningAPI.updateGrade(grade, card_id)
+    // console.log(response.data)
+    const cardPack_id = response.data.updatedGrade.cardsPack_id
+    dispatch(getCardsThunk(cardPack_id))
+}

@@ -9,7 +9,7 @@ import {NewPasswordContainer} from "./new-password/NewPasswordContainer";
 import {ProfileContainer} from './profile/ProfileContainer';
 import {CardPacksPage} from './cardPacks/СardPacksPage';
 import CardsPage from "./cards/CardsPage";
-import {LearnPage} from "./learnPage/LearnPage";
+import LearnPage from "./learnPage/LearnPage";
 
 export const PATH = {
     LOGIN: '/login',
