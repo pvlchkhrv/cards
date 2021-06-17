@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {CardsStateType, getCardsThunk} from "../../m2-bll/cards-reducer";
+import {CardType, getCardsThunk} from "../../m2-bll/cards-reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {Modal} from "@material-ui/core";
 import {AppRootStateType} from "../../m2-bll/store";
+import Button from "../common/button/Button";
 
 
 const grades = ['не знал', 'забыл', 'долго думал', 'перепутал', 'знал'];
 
-const getCard = (cards: CardsStateType[]) => {
+const getCard = (cards: CardType[]) => {
     const sum = cards.reduce((acc, card) => acc + (6 - card.grade) * (6 - card.grade), 0);
     const rand = Math.random() * sum;
-    const res = cards.reduce((acc: { sum: number, id: number}, card, i) => {
+    const res = cards.reduce((acc: { sum: number, id: number }, card, i) => {
             const newSum = acc.sum + (6 - card.grade) * (6 - card.grade);
             return {sum: newSum, id: newSum < rand ? i : acc.id}
         }
@@ -25,24 +25,22 @@ const LearnPage = () => {
     const [isChecked, setIsChecked] = useState<boolean>(false);
     const [first, setFirst] = useState<boolean>(true);
     // const [first, setFirst] = useState<boolean>(0);
-    const {cards} = useSelector((store: AppRootStateType) => store.cards);
-    const {id} = useParams();
+    const {cards} = useSelector((store: AppRootStateType) => store.cards.cardsData);
+    const {cardPackID} = useParams<{ cardPackID: string }>();
 
-    const [card, setCard] = useState<CardsStateType>({
-        _id: 'fake',
-        cardsPack_id: '',
-
+    const [card, setCard] = useState<CardType>({
         answer: 'answer fake',
         question: 'question fake',
+        cardsPack_id: '',
         grade: 0,
-        shots: 0,
-
-        type: '',
         rating: 0,
-        more_id: '',
-
+        shots: 0,
+        type: '',
+        user_id: '',
         created: '',
         updated: '',
+        __v: 0,
+        _id: 'fake'
     });
 
     const dispatch = useDispatch();
@@ -50,7 +48,7 @@ const LearnPage = () => {
         console.log('LearnContainer useEffect');
 
         if (first) {
-            dispatch(getCardsThunk(id));
+            dispatch(getCardsThunk(cardPackID));
             setFirst(false);
         }
 
@@ -60,7 +58,7 @@ const LearnPage = () => {
         return () => {
             console.log('LearnContainer useEffect off');
         }
-    }, [dispatch, id, cards, first]);
+    }, [dispatch, cardPackID, cards, first]);
 
     const onNext = () => {
         setIsChecked(false);
@@ -73,14 +71,14 @@ const LearnPage = () => {
         }
     }
 
-    DEV_VERSION && console.log('render LearnPage');
+    // DEV_VERSION && console.log('render LearnPage');
     return (
         <div>
             LearnPage
 
             <div>{card.question}</div>
             <div>
-                <ButtonNya onClick={() => setIsChecked(true)}>check</ButtonNya>
+                <Button onClick={() => setIsChecked(true)}>check</Button>
             </div>
 
             {isChecked && (
@@ -88,11 +86,11 @@ const LearnPage = () => {
                     <div>{card.answer}</div>
 
                     {grades.map((g, i) => (
-                        <ButtonNya key={'grade-' + i} onClick={() => {
-                        }}>{g}</ButtonNya>
+                        <Button key={'grade-' + i} onClick={() => {
+                        }}>{g}</Button>
                     ))}
 
-                    <div><ButtonNya onClick={onNext}>next</ButtonNya></div>
+                    <div><Button onClick={onNext}>next</Button></div>
                 </>
             )}
         </div>
