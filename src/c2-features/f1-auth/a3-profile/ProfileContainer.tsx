@@ -2,12 +2,11 @@ import React, {useEffect, useState} from "react";
 import Profile from "./Profile";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../../c1-main/m2-bll/store";
-import {logOutTC} from "../a1-login/login-reducer";
 import {RequestStatusType} from "../../../c1-main/m2-bll/app-reducer";
 import {authMe, changeProfile} from './profile-reducer';
+import {logOut} from '../a1-login/login-reducer';
 
 export const ProfileContainer: React.FC<{}> = () => {
-    debugger
     const dispatch = useDispatch();
     const {name, avatar, email} = useSelector<AppRootStateType, any>(state => state.profile.profileData)
     const isAuth = useSelector<AppRootStateType, boolean>(state => state.app.isAuth)
@@ -36,7 +35,7 @@ export const ProfileContainer: React.FC<{}> = () => {
     }
 
     const onLogoutClickHandler = () => {
-        dispatch(logOutTC());
+        dispatch(logOut());
     }
 
 

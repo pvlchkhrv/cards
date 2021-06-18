@@ -34,7 +34,7 @@ export const setAppIsAuth = (isAuth: boolean) => ({type: SET_IS_AUTH, isAuth} as
 export type SetAppErrorActionType = ReturnType<typeof setAppError>;
 export type SetAppStatusActionType = ReturnType<typeof setAppStatus>;
 
-type AppActionsType =
+export type AppActionsType =
     | ReturnType<typeof setAppError>
     | ReturnType<typeof setAppSuccess>
     | ReturnType<typeof setAppStatus>

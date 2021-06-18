@@ -32,7 +32,7 @@ const CardsPageContainer = () => {
     const isAuth = useSelector<AppRootStateType, boolean>(state => state.app.isAuth);
     const appStatus = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status);
     const cardsObj = useSelector<AppRootStateType, CardsStateType>(state => state.cards);
-    const user = useSelector<AppRootStateType, any>(state => state.login.user);
+    const user = useSelector<AppRootStateType, any>(state => state.profile.profileData);
     const userId = useSelector<AppRootStateType, string>(state => state.cards.cardsData.packUserId);
 
     const onDeleteClickHandler = (id: string) => {

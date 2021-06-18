@@ -1,11 +1,11 @@
 import {instance} from '../../c1-main/m3-dal/instance';
-import {UserDataType} from './a1-login/login-reducer';
+import {UserDataType} from './a3-profile/profile-reducer';
 
 const from = 'pvlchkhrv@gmail.com';
 const message = `<div>password recover link: <a href='https://neko-back.herokuapp.com/2.0/set-new-password/$token$'>Link</a></div>`;
 
 export const authAPI = {
-    ping(){
+    ping() {
         return instance.get(`/ping/?frontTime=${Date.now()}`);
     },
     authMe() {

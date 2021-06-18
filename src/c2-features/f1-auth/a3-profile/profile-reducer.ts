@@ -1,22 +1,29 @@
 import {Dispatch} from 'redux';
 import {authAPI} from '../authAPI';
 import {setAppError, setAppIsAuth, setAppStatus} from '../../../c1-main/m2-bll/app-reducer';
-import {setAuthUserData, UserDataType} from '../a1-login/login-reducer';
 
 const PROFILE_DATA = 'PROFILE_DATA';
 const NEW_PROFILE_NAME = 'NEW_PROFILE_NAME';
 const NEW_PROFILE_AVATAR = 'NEW_PROFILE_AVATAR';
 
-export type ChangeDataProfile = {
-    updatedUser: UserDataType
+export type UserDataType = {
+    _id: string,
+    email: string,
+    name: string,
+    avatar?: string,
+    publicCardPacksCount: number
+    created: Date,
+    updated: Date,
+    isAdmin: boolean,
+    verified: boolean,
+    rememberMe: boolean
     error?: string
 }
 
 export type ProfileInitialStateType = typeof ProfileInitialState
 
 const ProfileInitialState = {
-    profileData: {} as UserDataType,
-    token: ''
+    profile: {} as UserDataType,
 }
 
 export const profileReducer = (state: ProfileInitialStateType = ProfileInitialState, action: ProfileActionsType) => {
@@ -30,14 +37,14 @@ export const profileReducer = (state: ProfileInitialStateType = ProfileInitialSt
             return {
                 ...state,
                 profileData: {
-                    ...state.profileData, name: action.name
+                    ...state.profile, name: action.name
                 }
             }
         case NEW_PROFILE_AVATAR:
             return {
                 ...state,
                 profileData: {
-                    ...state.profileData, avatar: action.avatar
+                    ...state.profile, avatar: action.avatar
                 }
             }
         default:
@@ -54,7 +61,7 @@ export const authMe = () => (dispatch: Dispatch) => {
     dispatch(setAppStatus('loading'))
     authAPI.authMe()
         .then(res => {
-            dispatch(setAuthUserData(res.data.updatedUser));
+            // dispatch(setAuthUserData(res.data.updatedUser));
             dispatch(setProfileData(res.data.updatedUser))
             dispatch(setToken(res.data.token))
             dispatch(setAppIsAuth(true))

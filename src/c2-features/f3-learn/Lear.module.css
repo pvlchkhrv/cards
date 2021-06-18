@@ -1,22 +1,11 @@
 .container {
-display: flex;
+    display: flex;
     justify-content: center;
 }
-
 .paper {
-    height: 350px;
-    width: 300px;
-}
-.from {
+    height: 400px;
+    width: 400px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-}
-
-.button {
-    margin-top: 20px;
-}
-
-.reg {
-    margin-top: 10px;
 }

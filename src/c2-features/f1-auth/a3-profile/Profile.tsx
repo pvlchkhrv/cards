@@ -4,6 +4,8 @@ import PagesIcon from '@material-ui/icons/Pages';
 import LayersIcon from '@material-ui/icons/Layers';
 import s from './Profile.module.css'
 import {EditableSpan} from '../../../c1-main/m1-ui/common/editable-span/EditableSpan';
+import {PATH} from '../../../c1-main/m1-ui/Routes';
+import {NavLink} from 'react-router-dom';
 
 type ProfilePropsType = {
     nameValue: string
@@ -23,7 +25,7 @@ const Profile: React.FC<ProfilePropsType> = ({
                                                  email
                                              }) => {
     return (
-        <div>
+        <div className={s.container}>
             <Paper elevation={3} className={s.paper}>
                 <Avatar alt="avatar" src="https://images.aif.by/007/594/329095c44e514d3e3c8719ca8a623340.jpg"
                         className={s.avatar}/>
@@ -32,13 +34,13 @@ const Profile: React.FC<ProfilePropsType> = ({
                         <ListItemIcon>
                             <PagesIcon/>
                         </ListItemIcon>
-                        <ListItemText>Total Packs: <span>10</span></ListItemText>
+                        <NavLink to={PATH.CARD_PACKS} className={s.link}><ListItemText>Total Packs: <span>10</span></ListItemText></NavLink>
                     </ListItem>
                     <ListItem button>
                         <ListItemIcon>
                             <LayersIcon/>
                         </ListItemIcon>
-                        <ListItemText>Total Cards: <span>20</span></ListItemText>
+                        <NavLink to={PATH.CARDS + "/:cardPackID"} className={s.link}><ListItemText>Total Cards: <span>10</span></ListItemText></NavLink>
                     </ListItem>
                 </List>
                 <div>

@@ -11,6 +11,8 @@ import {
     TextField
 } from '@material-ui/core';
 import s from './Login.module.css'
+import {NavLink} from 'react-router-dom';
+import {PATH} from '../../../c1-main/m1-ui/Routes';
 
 type LoginPropsType = {
     onSubmitHandler: (email: string, password: string, rememberMe: boolean) => void
@@ -45,14 +47,14 @@ export const Login: React.FC<LoginPropsType> = ({onSubmitHandler}) => {
         },
     });
     return (
-        <div className={s.loginContainer}>
-            <Paper className={s.formContainer} elevation={3}>
+        <div className={s.container}>
+            <Paper className={s.paper} elevation={3}>
                 <form onSubmit={formik.handleSubmit}>
                     <FormControl>
                         <FormLabel>
                             <h3>LOGIN</h3>
                         </FormLabel>
-                        <FormGroup className={s.form}>
+                        <FormGroup >
                             <TextField
                                 variant={'outlined'}
                                 label="Email"
@@ -77,10 +79,14 @@ export const Login: React.FC<LoginPropsType> = ({onSubmitHandler}) => {
                                         {...formik.getFieldProps('rememberMe')}/>
                                 }
                             />
-                            <Button type={'submit'} variant={'contained'} color={'default'}>Log In</Button>
+                            <Button type={'submit'} variant={'contained'} color={'default'} className={s.button}>Log In</Button>
                         </FormGroup>
                     </FormControl>
                 </form>
+                <div className={s.reg}>
+                    <NavLink  to={PATH.REGISTER}>Sign up</NavLink>
+                </div>
+
             </Paper>
 
         </div>

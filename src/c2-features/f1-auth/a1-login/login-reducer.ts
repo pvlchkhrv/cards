@@ -1,45 +1,28 @@
-import {Dispatch} from "redux";
-import {setAppError, setAppIsAuth, setAppStatus, setAppSuccess} from "../../../c1-main/m2-bll/app-reducer";
+import {setAppError, setAppIsAuth, setAppStatus} from "../../../c1-main/m2-bll/app-reducer";
 import {authAPI} from '../authAPI';
 import {setProfileData} from '../a3-profile/profile-reducer';
+import {ThunkAction} from 'redux-thunk';
+import {AppRootActionsType, AppRootStateType} from '../../../c1-main/m2-bll/store';
 
-const SET_USER_DATA = 'SET_USER_DATA';
-const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE';
-const LOGIN_BUTTON_DISABLE = 'LOGIN_BUTTON_DISABLE';
-const LOGOUT = 'LOGOUT';
+const SET_IS_LOGGED = 'AUTH/SET-IS-LOGGED';
 
-export type UserDataType = {
-    _id: string,
-    email: string,
-    name: string,
-    avatar?: string,
-    publicCardPacksCount: number
-    created: Date,
-    updated: Date,
-    isAdmin: boolean,
-    verified: boolean,
-    rememberMe: boolean
-    error?: string
-}
+type ThunkType = ThunkAction<void, AppRootStateType, unknown, AppRootActionsType>
 
 export type LoginInitialStateType = typeof LoginInitialState;
 
 const LoginInitialState = {
-    user: {} as UserDataType | null
+    isLogged: false
 };
 
 export type LoginActionsType =
-    | ReturnType<typeof setAuthUserData>
-    | ReturnType<typeof setErrorMessageAC>
-    | ReturnType<typeof loginButtonDisableAC>
-    | ReturnType<typeof logOutAC>
+    | ReturnType<typeof setIsLogged>
 
 export const loginReducer = (state: LoginInitialStateType = LoginInitialState, action: LoginActionsType): LoginInitialStateType => {
     switch (action.type) {
-        case SET_USER_DATA:
+        case SET_IS_LOGGED:
             return {
                 ...state,
-                user: action.user,
+                isLogged: action.isLogged,
             }
         default:
             return state;
@@ -47,17 +30,16 @@ export const loginReducer = (state: LoginInitialStateType = LoginInitialState, a
 };
 
 // ACs
-export const setAuthUserData = (user: UserDataType | null) => ({type: SET_USER_DATA, user}) as const;
-export const setErrorMessageAC = (errorMessage: string | null) => ({type: SET_ERROR_MESSAGE, errorMessage}) as const;
-export const loginButtonDisableAC = (disable: boolean) => ({type: LOGIN_BUTTON_DISABLE, disable}) as const;
-export const logOutAC = (data: string | null) => ({type: LOGOUT, data}) as const;
+
+export const setIsLogged = (isLogged: boolean) => ({type: SET_IS_LOGGED, isLogged}) as const;
 
 // Thunks
-export const getAuthUserData = (email: string, password: string, rememberMe: boolean) => (dispatch: Dispatch) => {
+export const logIn = (email: string, password: string, rememberMe: boolean): ThunkType => dispatch => {
     dispatch(setAppStatus('loading'))
     authAPI.login(email, password, rememberMe)
         .then(res => {
-            dispatch(setAuthUserData(res.data))
+            console.log(res.data)
+            setIsLogged(true)
             setProfileData(res.data)
             dispatch(setAppStatus('succeed'))
             dispatch(setAppIsAuth(true))
@@ -68,14 +50,14 @@ export const getAuthUserData = (email: string, password: string, rememberMe: boo
                 : (e.message + ', more details in the console')
             ))
             dispatch(setAppStatus('failed'))
-            dispatch(setAppIsAuth(false))
         })
 }
-export const logOutTC = () => (dispatch: Dispatch) => {
+export const logOut = (): ThunkType => dispatch => {
     authAPI.logout()
         .then(res => {
-                dispatch(setAppSuccess(res.data))
-                dispatch(setAuthUserData(null))
+                dispatch(setIsLogged(false));
+                console.log(res.data)
+                dispatch(setAppStatus('succeed'))
             }
         )
         .catch((e) => {
