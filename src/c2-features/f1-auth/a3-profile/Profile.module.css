@@ -1,0 +1,28 @@
+/*.main {*/
+/*    height: 100vh;*/
+/*    background: linear-gradient(180deg, #e6d4de 0%, #9890c7 100%);*/
+/*    padding-top: 30px;*/
+/*}*/
+
+.paper {
+    width: 400px;
+    height: 450px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+}
+
+.buttonGroup{
+    display: flex;
+    justify-content: space-around;
+}
+
+.button{
+    width: 100px;
+}
