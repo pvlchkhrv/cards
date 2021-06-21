@@ -34,13 +34,15 @@ const Profile: React.FC<ProfilePropsType> = ({
                         <ListItemIcon>
                             <PagesIcon/>
                         </ListItemIcon>
-                        <NavLink to={PATH.CARD_PACKS} className={s.link}><ListItemText>Total Packs: <span>10</span></ListItemText></NavLink>
+                        <NavLink to={PATH.CARD_PACKS} className={s.link}><ListItemText>Total
+                            Packs: <span>10</span></ListItemText></NavLink>
                     </ListItem>
                     <ListItem button>
                         <ListItemIcon>
                             <LayersIcon/>
                         </ListItemIcon>
-                        <NavLink to={PATH.CARDS + "/:cardPackID"} className={s.link}><ListItemText>Total Cards: <span>10</span></ListItemText></NavLink>
+                        <NavLink to={PATH.CARDS + "/:cardPackID"} className={s.link}><ListItemText>Total
+                            Cards: <span>10</span></ListItemText></NavLink>
                     </ListItem>
                 </List>
                 <div>

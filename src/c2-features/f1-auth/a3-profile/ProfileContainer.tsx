@@ -5,22 +5,26 @@ import {AppRootStateType} from "../../../c1-main/m2-bll/store";
 import {RequestStatusType} from "../../../c1-main/m2-bll/app-reducer";
 import {authMe, changeProfile} from './profile-reducer';
 import {logOut} from '../a1-login/login-reducer';
+import {UserDataType} from '../../../c1-main/m2-bll/login-reducer';
+import {Redirect} from 'react-router-dom';
+import {PATH} from '../../../c1-main/m1-ui/Routes';
 
 export const ProfileContainer: React.FC<{}> = () => {
     const dispatch = useDispatch();
-    const {name, avatar, email} = useSelector<AppRootStateType, any>(state => state.profile.profileData)
+    const {name, avatar, email} = useSelector<AppRootStateType, UserDataType>(state => state.profile.profile)
     const isAuth = useSelector<AppRootStateType, boolean>(state => state.app.isAuth)
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+
     // const [nameValue, setNameValue] = useState(name);
     const [avatarValue, setAvatarValue] = useState(avatar);
 
     useEffect(() => {
         dispatch(authMe());
-    }, [name])
+    }, [])
 
-    // if (!isAuth) {
-    //     return <Redirect to={PATH.LOGIN}/>
-    // }
+    if (!isAuth) {
+        return <Redirect to={PATH.LOGIN}/>
+    }
 
     const changeAvatarHandler = (avatarLink: string) => {
         setAvatarValue(avatarLink)
@@ -37,7 +41,6 @@ export const ProfileContainer: React.FC<{}> = () => {
     const onLogoutClickHandler = () => {
         dispatch(logOut());
     }
-
 
     return (
         <Profile

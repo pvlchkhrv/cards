@@ -21,7 +21,7 @@ export const CardPacksContainer: React.FC = () => {
         pageCount
     } = useSelector<AppRootStateType, any>(state => state.packs.packsData);
     const packUserId = useSelector<AppRootStateType, string>(state => state.packs.packUser_id);
-    const user = useSelector<AppRootStateType, any>(state => state.profile.profileData);
+    const user = useSelector<AppRootStateType, any>(state => state.profile.profile);
     const isAuth = useSelector<AppRootStateType, boolean>(state => state.app.isAuth);
     const [isMine, setIsMine] = useState(!!packUserId);
     // const {params} = useParams();

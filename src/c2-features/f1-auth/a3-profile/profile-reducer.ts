@@ -2,22 +2,24 @@ import {Dispatch} from 'redux';
 import {authAPI} from '../authAPI';
 import {setAppError, setAppIsAuth, setAppStatus} from '../../../c1-main/m2-bll/app-reducer';
 
-const PROFILE_DATA = 'PROFILE_DATA';
-const NEW_PROFILE_NAME = 'NEW_PROFILE_NAME';
-const NEW_PROFILE_AVATAR = 'NEW_PROFILE_AVATAR';
+const SET_PROFILE_DATA = 'SET-PROFILE-DATA';
+const NEW_PROFILE_NAME = 'NEW-PROFILE-NAME';
+const NEW_PROFILE_AVATAR = 'NEW-PROFILE-AVATAR';
 
 export type UserDataType = {
-    _id: string,
-    email: string,
-    name: string,
-    avatar?: string,
+    avatar?: string
+    created: Date
+    email: string
+    isAdmin: boolean
+    name: string
     publicCardPacksCount: number
-    created: Date,
-    updated: Date,
-    isAdmin: boolean,
-    verified: boolean,
     rememberMe: boolean
-    error?: string
+    token: string
+    tokenDeathTime: number
+    updated: Date
+    verified: boolean
+    __v: number
+    _id: string
 }
 
 export type ProfileInitialStateType = typeof ProfileInitialState
@@ -26,24 +28,24 @@ const ProfileInitialState = {
     profile: {} as UserDataType,
 }
 
-export const profileReducer = (state: ProfileInitialStateType = ProfileInitialState, action: ProfileActionsType) => {
+export const profileReducer = (state: ProfileInitialStateType = ProfileInitialState, action: ProfileActionsType): ProfileInitialStateType => {
     switch (action.type) {
-        case PROFILE_DATA:
+        case SET_PROFILE_DATA:
             return {
                 ...state,
-                profileData: action.user
+                profile:{...action.user}
             }
         case NEW_PROFILE_NAME:
             return {
                 ...state,
-                profileData: {
+                profile: {
                     ...state.profile, name: action.name
                 }
             }
         case NEW_PROFILE_AVATAR:
             return {
                 ...state,
-                profileData: {
+                profile: {
                     ...state.profile, avatar: action.avatar
                 }
             }
@@ -52,8 +54,7 @@ export const profileReducer = (state: ProfileInitialStateType = ProfileInitialSt
     }
 };
 
-export const setProfileData = (user: UserDataType) => ({type: PROFILE_DATA, user} as const)
-export const setToken = (token: string) => ({type: PROFILE_DATA, token} as const)
+export const setProfileData = (user: UserDataType) => ({type: SET_PROFILE_DATA, user} as const)
 export const setProfileName = (name: string) => ({type: NEW_PROFILE_NAME, name} as const)
 export const setProfileAvatar = (avatar: string | undefined) => ({type: NEW_PROFILE_AVATAR, avatar} as const)
 
@@ -61,10 +62,7 @@ export const authMe = () => (dispatch: Dispatch) => {
     dispatch(setAppStatus('loading'))
     authAPI.authMe()
         .then(res => {
-            // dispatch(setAuthUserData(res.data.updatedUser));
-            dispatch(setProfileData(res.data.updatedUser))
-            dispatch(setToken(res.data.token))
-            dispatch(setAppIsAuth(true))
+            dispatch(setAppIsAuth(true));
         })
         .catch((e) => {
             dispatch(setAppError(e.response
@@ -75,7 +73,7 @@ export const authMe = () => (dispatch: Dispatch) => {
         })
 }
 
-export const changeProfile = (name?: string, avatar?:  undefined | string) => (dispatch: Dispatch) => {
+export const changeProfile = (name?: string, avatar?: undefined | string) => (dispatch: Dispatch) => {
     dispatch(setAppStatus('loading'))
     authAPI.updateProfile(name, avatar)
         .then(res => {

@@ -39,7 +39,7 @@ export const Routes: React.FC = () => {
                 <Route path={PATH.SET_NEW_PASSWORD} render={() => <NewPasswordContainer/>}/>
                 <Route path={PATH.TEST} render={() => <Test/>}/>
                 <Route path={PATH.CARDS + "/:cardPackID"} render={() => <CardsPage/>}/>
-                <Route path={PATH.LEARN} render={() => <LearnPage/>}/>
+                <Route path={PATH.LEARN + "/:cardPackID"} render={() => <LearnPage/>}/>
                 <Route render={() => <Error404/>}/>
             </Switch>
         </div>

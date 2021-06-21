@@ -39,4 +39,3 @@ export const learnReducer = (state: LearnInitialStateType = LearnInitialState, a
             return state;
     }
 }
-export {}

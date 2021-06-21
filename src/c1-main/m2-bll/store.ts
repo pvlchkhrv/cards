@@ -1,6 +1,5 @@
 import {applyMiddleware, combineReducers, createStore} from 'redux';
 import {registerReducer} from './register-reducer';
-import {profileReducer} from './profile-reducer';
 import {restorePasswordReducer} from './restore-password-reducer';
 import {newPasswordReducer} from './new-password-reducer';
 import {testReducer} from './test-reducer';
@@ -9,6 +8,7 @@ import {AppActionsType, appReducer} from './app-reducer';
 import {packsReducer} from './cardPacks-reducer';
 import cardsReducer from "./cards-reducer";
 import {LoginActionsType, loginReducer} from '../../c2-features/f1-auth/a1-login/login-reducer';
+import profileReducer, {ProfileActionsType} from '../../c2-features/f1-auth/a3-profile/profile-reducer';
 
 const rootReducer = combineReducers({
     app: appReducer,
@@ -30,3 +30,4 @@ export type AppRootStateType = ReturnType<typeof rootReducer>;
 export type AppRootActionsType =
     | LoginActionsType
     | AppActionsType
+    | ProfileActionsType

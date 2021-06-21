@@ -14,7 +14,7 @@ export const EditableSpan = React.memo(function (props: EditableSpanPropsType) {
     let [value, setValue] = useState(props.value);
     const activateEditMode = () => {
         setEditMode(true);
-        setValue(props.value);
+        // setValue(props.value);
     }
     const activateViewMode = () => {
         setEditMode(false);
@@ -26,5 +26,5 @@ export const EditableSpan = React.memo(function (props: EditableSpanPropsType) {
 
     return editMode
         ? <TextField value={value} onChange={changeValue} autoFocus onBlur={activateViewMode} />
-        : <span onDoubleClick={activateEditMode} placeholder={'Type here please'}>{props.value} <CreateIcon fontSize={'small'}/> </span>
+        : <span onDoubleClick={activateEditMode} placeholder={'Type here please'}>{value} <CreateIcon fontSize={'small'}/> </span>
 });

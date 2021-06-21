@@ -3,6 +3,7 @@ import {authAPI} from '../authAPI';
 import {setProfileData} from '../a3-profile/profile-reducer';
 import {ThunkAction} from 'redux-thunk';
 import {AppRootActionsType, AppRootStateType} from '../../../c1-main/m2-bll/store';
+import {Dispatch} from 'redux';
 
 const SET_IS_LOGGED = 'AUTH/SET-IS-LOGGED';
 
@@ -34,13 +35,13 @@ export const loginReducer = (state: LoginInitialStateType = LoginInitialState, a
 export const setIsLogged = (isLogged: boolean) => ({type: SET_IS_LOGGED, isLogged}) as const;
 
 // Thunks
-export const logIn = (email: string, password: string, rememberMe: boolean): ThunkType => dispatch => {
+export const logIn = (email: string, password: string, rememberMe: boolean): ThunkAction<void, AppRootStateType, unknown, AppRootActionsType> => (dispatch: Dispatch) => {
     dispatch(setAppStatus('loading'))
     authAPI.login(email, password, rememberMe)
         .then(res => {
             console.log(res.data)
-            setIsLogged(true)
-            setProfileData(res.data)
+            dispatch(setProfileData(res.data))
+            dispatch(setIsLogged(true))
             dispatch(setAppStatus('succeed'))
             dispatch(setAppIsAuth(true))
         })
@@ -56,6 +57,7 @@ export const logOut = (): ThunkType => dispatch => {
     authAPI.logout()
         .then(res => {
                 dispatch(setIsLogged(false));
+                dispatch(setAppIsAuth(false));
                 console.log(res.data)
                 dispatch(setAppStatus('succeed'))
             }

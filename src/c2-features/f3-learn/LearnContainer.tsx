@@ -1,6 +1,9 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Learn from './Learn';
-import {CardType} from '../../c1-main/m2-bll/cards-reducer';
+import {CardType, getCardsThunk} from '../../c1-main/m2-bll/cards-reducer';
+import {useDispatch, useSelector} from 'react-redux';
+import {AppRootStateType} from '../../c1-main/m2-bll/store';
+import {useParams} from 'react-router-dom';
 
 const LearnContainer: React.FC<{}> = () => {
 
@@ -16,10 +19,57 @@ const LearnContainer: React.FC<{}> = () => {
 
         return cards[res.id + 1];
     }
+    const cards = useSelector<AppRootStateType, CardType[]>(state => state.cards.cardsData.cards)
+    const {cardPackID} = useParams<{ cardPackID: string }>();
+
+    const [isClicked, setIsClicked] = useState(false)
+    const [card, setCard] = useState<CardType>({
+        answer: 'Сокол не рысь!',
+        question: 'Сокол - рысь?',
+        cardsPack_id: '',
+        grade: 0,
+        rating: 0,
+        shots: 0,
+        type: '',
+        user_id: '',
+        created: '',
+        updated: '',
+        __v: 0,
+        _id: ''
+    });
+    const [first, setFirst] = useState<boolean>(true);
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        console.log('LearnContainer useEffect');
+
+        if (first) {
+            dispatch(getCardsThunk(cardPackID));
+            setFirst(false);
+        }
+
+        console.log('cards', cards)
+        if (cards.length > 0) setCard(getCard(cards));
+
+        return () => {
+            console.log('LearnContainer useEffect off');
+        }
+    }, [dispatch, cardPackID, cards, first]);
+
+
+    const onNextClick = () => {
+        setIsClicked(false)
+        setCard(getCard(cards))
+    }
+
 
     return (
         <div>
-            <Learn/>
+            <Learn isClicked={isClicked}
+                   setIsClicked={setIsClicked}
+                   card={card}
+                   onNextClick={onNextClick}
+            />
         </div>
     )
 }
