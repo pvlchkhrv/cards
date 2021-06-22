@@ -8,8 +8,11 @@ import IconButton from "@material-ui/core/IconButton";
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import SortButtons from "./SortButtons";
+import Modal from "../modals/Modal";
 
 interface TableProps {
+    show: boolean
+    modalShow: (show: boolean) => void
     disable: boolean
     cardsObj: AuthInitialStateType
     appStatus: RequestStatusType
@@ -21,6 +24,8 @@ interface TableProps {
 
 export const TableData = (
     {
+        show,
+        modalShow,
         disable,
         onDeleteClickHandler,
         onUpdateClickHandler,
@@ -35,6 +40,19 @@ export const TableData = (
             {appStatus === 'loading' && <div>Loading...</div>}
             {appStatus === 'failed' && <div>{appStatus}</div>}
             {appStatus === 'succeed' && <div></div>}
+            <Modal
+                enableBackground={true}
+                backgroundOnClick={() => modalShow(false)}
+
+                width={300}
+                height={200}
+                // modalOnClick={() => setShow(false)}
+
+                show={show}
+            >
+                Simple Modal
+                <button onClick={() => modalShow(false)}>Close</button>
+            </Modal>
             <TableContainer component={Paper}>
                 <Table className={s.table} aria-label="simple table">
                     <TableHead>
@@ -63,9 +81,9 @@ export const TableData = (
                                             onClick={() => onUpdateClickHandler(card._id)}>EDIT</Button>
                                     <Button disabled={disable} variant={'contained'} color={'secondary'}
                                             size={'medium'}
-                                            onClick={() => {
-                                                onDeleteClickHandler(card._id)
-                                            }}>DELETE</Button>
+                                            onClick={()=>modalShow(true)
+                                                // () => {onDeleteClickHandler(card._id)}
+                                            }>DELETE</Button>
                                 </TableCell>
                             </TableRow>
                         ))}
