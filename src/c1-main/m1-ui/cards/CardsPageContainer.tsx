@@ -19,6 +19,8 @@ import {TableData} from './Table';
 import {RequestStatusType} from "../../m2-bll/app-reducer";
 import {Redirect, useParams} from 'react-router-dom';
 import Paginator from "./Paginator";
+import Modal from "../modals/Modal";
+import AddModalContainer from "../modals/AddModalContainer";
 
 const CardsPageContainer = () => {
     console.log("CardsPageContainer")
@@ -36,15 +38,15 @@ const CardsPageContainer = () => {
     const user = useSelector<AppRootStateType, any>(state => state.login.user);
     const userId = useSelector<AppRootStateType, string>(state => state.cards.cardsData.packUserId);
 
-    const modalShow = (show:boolean) => {
+    const modalShow = (show: boolean) => {
         setShow(show);
     }
 
     const onDeleteClickHandler = (id: string) => {
         dispatch(deleteCardThunk(id, cardPackID));
     };
-    const onCreateClickHandler = () => {
-        dispatch(createCardThunk(cardPackID));
+    const onCreateClickHandler = (question:string) => {
+        dispatch(createCardThunk(cardPackID,question));
     };
     const onUpdateClickHandler = (id: string) => {
         dispatch(updateCardThunk(id, cardPackID));
@@ -78,7 +80,7 @@ const CardsPageContainer = () => {
         }
         dispatch(getCardsThunk(cardPackID))
     }, [isAuth, dispatch])
-    let disable = (user._id === userId) ? false : true
+    let disable = (user?._id === userId) ? false : true
 
     return (
         <div className={s.main}>
@@ -96,14 +98,18 @@ const CardsPageContainer = () => {
                     </div>
                 </div>
                 <div className={s.addButton}>
-                    <Button
-                        onClick={onCreateClickHandler} variant={'contained'} color={'primary'} size={'medium'}
-                        disabled={disable}
-                    >Add New Card</Button>
+                    <AddModalContainer onCreateClickHandler={onCreateClickHandler}/>
+                    {/*<Button*/}
+                    {/*    onClick={() => modalShow(true)} variant={'contained'} color={'primary'} size={'medium'}*/}
+                    {/*>Add New Card</Button>*/}
+                    {/*<Button*/}
+                    {/*    onClick={onCreateClickHandler} variant={'contained'} color={'primary'} size={'medium'}*/}
+                    {/*    disabled={disable}*/}
+                    {/*>Add New Card</Button>*/}
                 </div>
                 <TableData
                     show={show}
-                    modalShow = {modalShow}
+                    modalShow={modalShow}
                     disable={disable}
                     onDeleteClickHandler={onDeleteClickHandler}
                     onUpdateClickHandler={onUpdateClickHandler}

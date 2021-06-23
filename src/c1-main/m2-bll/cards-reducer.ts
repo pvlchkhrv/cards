@@ -148,10 +148,10 @@ export const deleteCardThunk = (cardId: string, packId: string) => async (dispat
     }
 }
 
-export const createCardThunk = (packId: string) => async (dispatch: any) => {
+export const createCardThunk = (packId: string,question:string) => async (dispatch: any) => {
     dispatch(setAppStatus('loading'));
     try {
-        let response = await cardsAPI.createCard(packId);
+        let response = await cardsAPI.createCard(packId,question);
         dispatch(getCardsThunk(packId))
         dispatch(setAppStatus('succeed'));
         console.log(response.data)

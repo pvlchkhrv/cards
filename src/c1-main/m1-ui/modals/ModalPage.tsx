@@ -1,10 +1,10 @@
 import React from "react";
-import ModalContainer from "./ModalContainer";
+import AddModalContainer from "./AddModalContainer";
 
 const ModalPage = () => {
     return (
         <>
-            <ModalContainer/>
+            {/*<AddModalContainer/>*/}
         </>
     )
 }

@@ -9,6 +9,7 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import SortButtons from "./SortButtons";
 import Modal from "../modals/Modal";
+import DeleteModalContainer from "../modals/deleteModal/DeleteModalContainer";
 
 interface TableProps {
     show: boolean
@@ -79,11 +80,13 @@ export const TableData = (
                                     <Button disabled={disable} variant={'contained'} color={'primary'}
                                             size={'medium'}
                                             onClick={() => onUpdateClickHandler(card._id)}>EDIT</Button>
-                                    <Button disabled={disable} variant={'contained'} color={'secondary'}
-                                            size={'medium'}
-                                            onClick={()=>modalShow(true)
-                                                // () => {onDeleteClickHandler(card._id)}
-                                            }>DELETE</Button>
+
+                                    <DeleteModalContainer card_ID={card._id} disable={disable} onDeleteClickHandler={onDeleteClickHandler}/>
+                                    {/*<Button disabled={disable} variant={'contained'} color={'secondary'}*/}
+                                    {/*        size={'medium'}*/}
+                                    {/*        onClick={()=>modalShow(true)*/}
+                                    {/*            // () => {onDeleteClickHandler(card._id)}*/}
+                                    {/*        }>DELETE</Button>*/}
                                 </TableCell>
                             </TableRow>
                         ))}

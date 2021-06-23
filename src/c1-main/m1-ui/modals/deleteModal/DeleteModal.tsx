@@ -60,9 +60,9 @@ const Modal: React.FC<IModal> = (
                     display: 'flex',
                     flexFlow: 'column',
                     alignItems: 'center',
-                    // justifyContent: 'center',
+                    justifyContent: 'center',
 
-                    background: 'aliceblue',
+                    background: 'lime',
                     zIndex: 21,
 
                     ...modalStyle,
