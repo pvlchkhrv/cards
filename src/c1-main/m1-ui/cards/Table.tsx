@@ -9,7 +9,7 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import SortButtons from "./SortButtons";
 import Modal from "../modals/Modal";
-import DeleteModalContainer from "../modals/deleteModal/DeleteModalContainer";
+import DeleteModalContainer from "../modals/DeleteModalContainer";
 
 interface TableProps {
     show: boolean

@@ -98,7 +98,7 @@ const CardsPageContainer = () => {
                     </div>
                 </div>
                 <div className={s.addButton}>
-                    <AddModalContainer onCreateClickHandler={onCreateClickHandler}/>
+                    <AddModalContainer disable={disable} onCreateClickHandler={onCreateClickHandler}/>
                     {/*<Button*/}
                     {/*    onClick={() => modalShow(true)} variant={'contained'} color={'primary'} size={'medium'}*/}
                     {/*>Add New Card</Button>*/}

@@ -4,10 +4,12 @@ import {Button, TextField} from "@material-ui/core";
 import s from "./ModalContainer.module.css"
 
 interface AddModalProps {
+    disable: boolean
     onCreateClickHandler: (question: string) => void
 }
 
 const AddModalContainer = ({
+                               disable,
                                onCreateClickHandler
                            }: AddModalProps) => {
     const [show, setShow] = useState(false);
@@ -22,7 +24,7 @@ const AddModalContainer = ({
     }
     return (
         <>
-            <Button
+            <Button disabled={disable}
                 onClick={() => setShow(true)} variant={'contained'} color={'primary'} size={'medium'}
             >Add New Card</Button>
             <Modal
