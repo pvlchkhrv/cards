@@ -10,19 +10,19 @@ import {NavLink} from 'react-router-dom';
 type ProfilePropsType = {
     nameValue: string
     avatarValue?: string
-    onAvatarChange: (avatarLink: string) => void
     onNameChange: (newName: string) => void
     onLogoutClick: () => void
     email: string
+    packsCount: number
 }
 
 const Profile: React.FC<ProfilePropsType> = ({
-                                                 onAvatarChange,
                                                  onNameChange,
                                                  onLogoutClick,
                                                  nameValue,
                                                  avatarValue,
-                                                 email
+                                                 email,
+                                                 packsCount
                                              }) => {
     return (
         <div className={s.container}>
@@ -32,17 +32,10 @@ const Profile: React.FC<ProfilePropsType> = ({
                 <List>
                     <ListItem button>
                         <ListItemIcon>
-                            <PagesIcon/>
-                        </ListItemIcon>
-                        <NavLink to={PATH.CARD_PACKS} className={s.link}><ListItemText>Total
-                            Packs: <span>10</span></ListItemText></NavLink>
-                    </ListItem>
-                    <ListItem button>
-                        <ListItemIcon>
                             <LayersIcon/>
                         </ListItemIcon>
-                        <NavLink to={PATH.CARDS + "/:cardPackID"} className={s.link}><ListItemText>Total
-                            Cards: <span>10</span></ListItemText></NavLink>
+                        <NavLink to={PATH.CARD_PACKS} className={s.link}><ListItemText>Total
+                            Packs: <span>{packsCount}</span></ListItemText></NavLink>
                     </ListItem>
                 </List>
                 <div>

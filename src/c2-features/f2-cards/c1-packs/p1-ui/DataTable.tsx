@@ -1,12 +1,13 @@
 import React from 'react';
 import {Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@material-ui/core';
-import {PackType} from '../../m2-bll/cardPacks-reducer';
+import {PackType} from '../p2-bll/cardPacks-reducer';
+import {PATH} from '../../../../c1-main/m1-ui/Routes';
+import {NavLink} from 'react-router-dom';
 
 type DataTablePropsType = {
     packs: PackType []
     deletePackHandler: (packId: string) => void
     editPackHandler: (packId: string, title: string) => void
-    packUserId: string
     userId: string
 }
 
@@ -14,7 +15,6 @@ export const DataTable: React.FC<DataTablePropsType> = ({
                                                             packs,
                                                             deletePackHandler,
                                                             editPackHandler,
-                                                            packUserId,
                                                             userId
                                                         }) => {
     return (
@@ -34,7 +34,7 @@ export const DataTable: React.FC<DataTablePropsType> = ({
                         {packs.map((pack) => (
                             <TableRow key={pack._id}>
                                 <TableCell component="th" scope="row">
-                                    {pack.name}
+                                    <NavLink to={PATH.CARDS + `/${pack._id}`}>{pack.name}</NavLink>
                                 </TableCell>
                                 <TableCell align="center">{pack.cardsCount}</TableCell>
                                 <TableCell align="center">{pack.updated}</TableCell>

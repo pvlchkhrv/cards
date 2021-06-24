@@ -1,7 +1,6 @@
 const SET_ANSWER_CORRECT = 'SET_ANSWER_CORRECT';
 const SET_DISPLAY_ANSWER = 'SET_DISPLAY_ANSWER';
 const SET_CARD_TO_LEARN = 'SET_CARD_TO_LEARN';
-
 export type LearnInitialStateType = typeof LearnInitialState;
 
 const LearnInitialState = {

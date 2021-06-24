@@ -1,47 +1,54 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {AppRootStateType} from '../../m2-bll/store';
+import {AppRootStateType} from '../../../../c1-main/m2-bll/store';
 import {CardPacks} from './CardPacks';
 import {
     createPack,
-    deletePackOnServer,
+    deletePack,
     getPacks,
-    PackType, setPage,
-    setUserId,
-    updatePackTitleOnServer
-} from '../../m2-bll/cardPacks-reducer';
+    getStartPacks,
+    PackType,
+    setPage,
+    updatePack,
+} from '../p2-bll/cardPacks-reducer';
+import {authMe} from '../../../f1-auth/a1-login/login-reducer';
 
 export const CardPacksContainer: React.FC = () => {
-    const packs = useSelector<AppRootStateType, PackType[]>(state => state.packs.packsData.cardPacks);
+    const isAuth = useSelector<AppRootStateType, boolean>(state => state.app.isAuth)
+    const packs = useSelector<AppRootStateType, PackType[]>(state => state.packs.packsData.cardPacks)
     const {
         cardPacksTotalCount,
         maxCardsCount,
         minCardsCount,
         page,
         pageCount
-    } = useSelector<AppRootStateType, any>(state => state.packs.packsData);
-    const packUserId = useSelector<AppRootStateType, string>(state => state.packs.packUser_id);
-    const user = useSelector<AppRootStateType, any>(state => state.profile.profile);
-    const isAuth = useSelector<AppRootStateType, boolean>(state => state.app.isAuth);
-    const [isMine, setIsMine] = useState(!!packUserId);
-    // const {params} = useParams();
-    const pages = Math.ceil(cardPacksTotalCount / pageCount);
+    } = useSelector<AppRootStateType, any>(state => state.packs.packsData)
+    const userId = useSelector<AppRootStateType, string>(state => state.profile.profile._id)
+    const [isMine, setIsMine] = useState(false)
+    const pagesQuantity = Math.ceil(cardPacksTotalCount / pageCount)
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getPacks());
-    }, [dispatch]);
+        if(!userId) {
+            dispatch(authMe())
+        }
+        dispatch(getStartPacks())
+    }, [])
+
+    // const getPacksHandler = () => {
+    //     isMine ? dispatch(getPacks(userId)) : dispatch(getPacks())
+    //     setIsMine(!isMine)
+    // }
 
     const getAllPacksHandler = () => {
-        dispatch(setUserId(''));
-        dispatch(getPacks());
-        setIsMine(false);
-        setPage(1);
+        dispatch(getPacks())
+        setIsMine(false)
+        dispatch(setPage(1))
     }
     const getUserPackHandler = () => {
-        dispatch(setUserId(user._id));
-        dispatch(getPacks());
+        dispatch(authMe())
+        dispatch(getPacks(userId));
         setIsMine(true);
         setPage(1);
     }
@@ -49,10 +56,10 @@ export const CardPacksContainer: React.FC = () => {
         dispatch(createPack(title));
     }
     const deletePackHandler = (packId: string) => {
-        dispatch(deletePackOnServer(packId));
+        dispatch(deletePack(packId));
     }
     const editPackHandler = (packId: string, title: string) => {
-        dispatch(updatePackTitleOnServer(packId, title))
+        dispatch(updatePack({_id: packId, name: title}))
     }
     const onChangePageHandler = (e: React.ChangeEvent<unknown>, value: number) => {
         dispatch(setPage(value));
@@ -70,9 +77,6 @@ export const CardPacksContainer: React.FC = () => {
 
     }
 
-    // if (!isAuth) {
-    //     return <Redirect to={'/login'}/>
-    // }
     return (
         <CardPacks getAllPacksHandler={getAllPacksHandler}
                    getUserPackHandler={getUserPackHandler}
@@ -82,10 +86,9 @@ export const CardPacksContainer: React.FC = () => {
                    onChangePage={onChangePageHandler}
                    onChangeItemsQuantity={onChangePageCountHandler}
                    packs={packs}
-                   packUserId={packUserId}
                    isMine={isMine}
-                   userId={user._id}
-                   pages={pages}
+                   userId={userId}
+                   pages={pagesQuantity}
                    pageCount={pageCount}
                    page={page}
         />

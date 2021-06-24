@@ -1,17 +1,15 @@
-import {Dispatch} from 'redux';
-import {setAppError, setAppStatus} from './app-reducer';
-import {packsAPI, PacksParamsType} from '../m3-dal/cardsPackAPI';
-import {ThunkAction} from 'redux-thunk';
-import {AppRootStateType} from './store';
+import {setAppError, setAppStatus} from '../../../../c1-main/m2-bll/app-reducer';
+import {packsAPI, UpdatePackPayloadType} from '../p3-dal/cardsPackAPI';
+import {AppRootStateType, AppThunkType} from '../../../../c1-main/m2-bll/store';
+import {authAPI} from '../../../f1-auth/authAPI';
 
 const SET_PACKS = 'PACKS/SET-PACKS';
-const SET_USER_ID = 'PACKS/SET-USER-ID';
 const SET_PAGE = 'PACKS/SET-PAGE';
 const SET_PAGE_COUNT = 'PACKS/SET-PAGE-COUNT';
 const SET_PACKS_TOTAL_COUNT = 'PACKS/SET-PACKS-TOTAL-COUNT';
 
 
-export const PacksInitState: PacksStateType = {
+export const PacksInitState: PacksInitStateType = {
     packsData: {
         cardPacks: [],
         cardPacksTotalCount: 0,
@@ -20,10 +18,9 @@ export const PacksInitState: PacksStateType = {
         page: 1,
         pageCount: 5
     },
-    packUser_id: '',
 };
 
-export const packsReducer = (state: PacksStateType = PacksInitState, action: ActionsType): PacksStateType => {
+export const packsReducer = (state: PacksInitStateType = PacksInitState, action: PacksActionsType): PacksInitStateType => {
     switch (action.type) {
         case SET_PACKS:
             return {
@@ -32,19 +29,13 @@ export const packsReducer = (state: PacksStateType = PacksInitState, action: Act
                     cardPacks: action.cardPacks,
                 }
             };
-        case SET_USER_ID:
-            return {
-                ...state,
-                packUser_id: action.userId
-            };
-        case SET_PAGE:{
-            return { ...state, packsData: {...state.packsData, page: action.page} };
+        case SET_PAGE: {
+            return {...state, packsData: {...state.packsData, page: action.page}}
         }
-
         case SET_PAGE_COUNT:
-            return { ...state, packsData: {...state.packsData, page: action.pageCount} }
+            return {...state, packsData: {...state.packsData, page: action.pageCount}}
         case SET_PACKS_TOTAL_COUNT:
-            return { ...state, packsData: {...state.packsData, cardPacksTotalCount: action.totalCount} }
+            return {...state, packsData: {...state.packsData, cardPacksTotalCount: action.totalCount}}
         // case SET_MIN_MAX:
         //     return { ...state, packsData: {...state.packsData, minCardsCount: action.totalCount} }
         default:
@@ -54,33 +45,40 @@ export const packsReducer = (state: PacksStateType = PacksInitState, action: Act
 
 //ACs
 export const setPacks = (cardPacks: PackType []) => ({type: SET_PACKS, cardPacks} as const);
-export const setUserId = (userId: string) => ({type: SET_USER_ID, userId} as const);
 export const setPage = (page: number) => ({type: SET_PAGE, page} as const);
 export const setPageCount = (pageCount: number) => ({type: SET_PAGE_COUNT, pageCount} as const);
 export const setPacksTotalCount = (totalCount: number) => ({type: SET_PACKS_TOTAL_COUNT, totalCount} as const);
 
 //Thunks
-export const getPacks = () => async (dispatch: Dispatch<ActionsType>, getState: () => AppRootStateType) => {
-    dispatch(setAppStatus('loading'));
-    const packUser_id = getState().packs.packUser_id;
-    const {page, pageCount, minCardsCount, maxCardsCount} = getState().packs.packsData
+export const getStartPacks = (): AppThunkType => async dispatch => {
+    dispatch(setAppStatus('loading'))
     try {
-        const response = await packsAPI.getPacks({user_id: packUser_id, pageCount, page, min: minCardsCount, max: maxCardsCount});
-        dispatch(setPacks(response.cardPacks));
+        await authAPI.authMe()
+        const response = await packsAPI.getPacks({})
+        dispatch(setPacks(response.cardPacks))
         dispatch(setPacksTotalCount(response.cardPacksTotalCount));
         dispatch(setAppStatus('succeed'));
-        console.log(response);
     } catch (e) {
         dispatch(setAppError(e.message));
         dispatch(setAppStatus('failed'));
     }
-};
+}
 
-export const createPack = (title: string) => async (getState: () => AppRootStateType, dispatch: Dispatch<any>) => {
+
+export const getPacks = (userId?: string): AppThunkType => async (dispatch, getState: () => AppRootStateType) => {
     dispatch(setAppStatus('loading'));
+    const {maxCardsCount, minCardsCount, page, pageCount} = getState().packs.packsData
     try {
-        const response = await packsAPI.addPack(title);
-        dispatch(getPacks());
+        const response = await packsAPI.getPacks({
+            max: maxCardsCount,
+            min: minCardsCount,
+            page: page,
+            pageCount: pageCount,
+            user_id: userId
+        });
+        dispatch(setPacks(response.cardPacks))
+        dispatch(setPacksTotalCount(response.cardPacksTotalCount));
+        console.log(response)
         dispatch(setAppStatus('succeed'));
     } catch (e) {
         dispatch(setAppError(e.message));
@@ -88,10 +86,23 @@ export const createPack = (title: string) => async (getState: () => AppRootState
     }
 };
 
-export const deletePackOnServer = (id: string): ThunkAction<void, AppRootStateType, unknown, any> => (dispatch) => {
+export const createPack = (title: string): AppThunkType => async (dispatch, getState: () => AppRootStateType) => {
+    dispatch(setAppStatus('loading'));
+    const userId = getState().login.userId;
+    try {
+        await packsAPI.createPack({name: title});
+        dispatch(getPacks(userId));
+        dispatch(setAppStatus('succeed'));
+    } catch (e) {
+        dispatch(setAppError(e.message));
+        dispatch(setAppStatus('failed'));
+    }
+};
+
+export const deletePack = (id: string): AppThunkType => async (dispatch) => {
     dispatch(setAppStatus('loading'));
     try {
-        const response = packsAPI.deletePack(id);
+        await packsAPI.deletePack(id);
         dispatch(getPacks());
         dispatch(setAppStatus('succeed'));
     } catch (e) {
@@ -100,13 +111,13 @@ export const deletePackOnServer = (id: string): ThunkAction<void, AppRootStateTy
     }
 }
 
-export const updatePackTitleOnServer = (id: string, title: string) => (dispatch: Dispatch<any>) => {
+export const updatePack = (updatePackPayload: UpdatePackPayloadType): AppThunkType => async (dispatch) => {
     dispatch(setAppStatus('loading'));
     try {
-        const response = packsAPI.updatePack(id, title);
+        await packsAPI.updatePack(updatePackPayload);
         dispatch(getPacks());
         dispatch(setAppStatus('succeed'));
-        console.log(response);
+        // console.log(response);
     } catch (e) {
         dispatch(setAppError(e.message));
         dispatch(setAppStatus('failed'));
@@ -114,11 +125,10 @@ export const updatePackTitleOnServer = (id: string, title: string) => (dispatch:
 }
 
 //Types
-type ActionsType =
+export type PacksActionsType =
     | ReturnType<typeof setAppError>
     | ReturnType<typeof setAppStatus>
     | ReturnType<typeof setPacks>
-    | ReturnType<typeof setUserId>
     | ReturnType<typeof setPage>
     | ReturnType<typeof setPageCount>
     | ReturnType<typeof setPacksTotalCount>
@@ -137,7 +147,7 @@ export type PackType = {
     updated: string
     __v: number
 };
-export type PacksStateType = {
+export type PacksInitStateType = {
     packsData: {
         cardPacks: PackType [],
         cardPacksTotalCount: number,
@@ -145,6 +155,5 @@ export type PacksStateType = {
         minCardsCount: number,
         page: number,
         pageCount: number
-    },
-    packUser_id: string,
+    }
 }

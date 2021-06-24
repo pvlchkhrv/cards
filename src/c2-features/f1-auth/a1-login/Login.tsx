@@ -46,6 +46,7 @@ export const Login: React.FC<LoginPropsType> = ({onSubmitHandler}) => {
             onSubmitHandler(values.email, values.password, values.rememberMe);
         },
     });
+
     return (
         <div className={s.container}>
             <Paper className={s.paper} elevation={3}>
@@ -54,7 +55,7 @@ export const Login: React.FC<LoginPropsType> = ({onSubmitHandler}) => {
                         <FormLabel>
                             <h3>LOGIN</h3>
                         </FormLabel>
-                        <FormGroup >
+                        <FormGroup>
                             <TextField
                                 variant={'outlined'}
                                 label="Email"
@@ -79,16 +80,15 @@ export const Login: React.FC<LoginPropsType> = ({onSubmitHandler}) => {
                                         {...formik.getFieldProps('rememberMe')}/>
                                 }
                             />
-                            <Button type={'submit'} variant={'contained'} color={'default'} className={s.button}>Log In</Button>
+                            <Button type={'submit'} variant={'contained'} color={'default'} className={s.button}>Log
+                                In</Button>
                         </FormGroup>
                     </FormControl>
                 </form>
                 <div className={s.reg}>
-                    <NavLink  to={PATH.REGISTER}>Sign up</NavLink>
+                    <NavLink to={PATH.REGISTER}>Sign up</NavLink>
                 </div>
-
             </Paper>
-
         </div>
     );
 };

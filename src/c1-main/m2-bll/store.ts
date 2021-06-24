@@ -3,9 +3,9 @@ import {registerReducer} from './register-reducer';
 import {restorePasswordReducer} from './restore-password-reducer';
 import {newPasswordReducer} from './new-password-reducer';
 import {testReducer} from './test-reducer';
-import thunk from 'redux-thunk';
+import thunk, {ThunkAction} from 'redux-thunk';
 import {AppActionsType, appReducer} from './app-reducer';
-import {packsReducer} from './cardPacks-reducer';
+import {PacksActionsType, packsReducer} from '../../c2-features/f2-cards/c1-packs/p2-bll/cardPacks-reducer';
 import cardsReducer from "./cards-reducer";
 import {LoginActionsType, loginReducer} from '../../c2-features/f1-auth/a1-login/login-reducer';
 import profileReducer, {ProfileActionsType} from '../../c2-features/f1-auth/a3-profile/profile-reducer';
@@ -31,3 +31,6 @@ export type AppRootActionsType =
     | LoginActionsType
     | AppActionsType
     | ProfileActionsType
+    | PacksActionsType
+
+export type AppThunkType = ThunkAction<void, AppRootStateType, unknown, AppRootActionsType>

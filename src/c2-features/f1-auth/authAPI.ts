@@ -9,7 +9,7 @@ export const authAPI = {
         return instance.get(`/ping/?frontTime=${Date.now()}`);
     },
     authMe() {
-        return instance.post<AuthMeResponseType>('auth/login', {});
+        return instance.post<AuthMeResponseType>('auth/me', {});
     },
     login(email: string, password: string, rememberMe: boolean) {
         return instance.post<LoginResponseType>('auth/login', {email, password, rememberMe});
@@ -36,11 +36,7 @@ type ResponseType = {
     info: string
     error: string
 }
-type AuthMeResponseType = {
-    token: string
-    tokenDeathTime: Date
-    updatedUser: UserDataType
-};
+type AuthMeResponseType = UserDataType;
 type LoginResponseType = UserDataType;
 type RegisterResponseType = {
     error?: string

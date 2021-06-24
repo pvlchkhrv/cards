@@ -1,10 +1,10 @@
-import React, {ChangeEvent} from 'react';
-import {Button, ButtonGroup, Container, Grid, TextField,} from '@material-ui/core';
+import React from 'react';
+import {Button, Container, Grid, TextField,} from '@material-ui/core';
 import s from './CardPackagePage.module.css'
 import {DataTable} from './DataTable';
 import {DoubleSlider} from './DoubleSlider';
 import {PaginationBar} from './PaginationBar';
-import {PackType} from '../../m2-bll/cardPacks-reducer';
+import {PackType} from '../p2-bll/cardPacks-reducer';
 
 type CardPacksPropsType = {
     getAllPacksHandler: () => void
@@ -15,7 +15,6 @@ type CardPacksPropsType = {
     onChangePage: (e: React.ChangeEvent<unknown>, page: number) => void
     onChangeItemsQuantity: (e: React.ChangeEventHandler<HTMLInputElement>, pageCount: number) => void
     packs: PackType[]
-    packUserId: string
     userId: string
     isMine: boolean
     pages: number
@@ -33,12 +32,11 @@ export const CardPacks: React.FC<CardPacksPropsType> = ({
                                                             onChangePage,
                                                             onChangeItemsQuantity,
                                                             packs,
-                                                            packUserId,
                                                             userId,
                                                             isMine,
                                                             pages,
                                                             page,
-                                                            pageCount
+                                                            pageCount,
                                                         }) => {
 
     return (
@@ -80,7 +78,6 @@ export const CardPacks: React.FC<CardPacksPropsType> = ({
                         <DataTable packs={packs}
                                    deletePackHandler={deletePackHandler}
                                    editPackHandler={editPackHandler}
-                                   packUserId={packUserId}
                                    userId={userId}
                         />
                         <PaginationBar pages={pages}

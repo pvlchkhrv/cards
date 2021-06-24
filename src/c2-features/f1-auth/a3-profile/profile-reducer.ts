@@ -4,7 +4,8 @@ import {setAppError, setAppIsAuth, setAppStatus} from '../../../c1-main/m2-bll/a
 
 const SET_PROFILE_DATA = 'SET-PROFILE-DATA';
 const NEW_PROFILE_NAME = 'NEW-PROFILE-NAME';
-const NEW_PROFILE_AVATAR = 'NEW-PROFILE-AVATAR';
+// const NEW_PROFILE_AVATAR = 'NEW-PROFILE-AVATAR';
+const SET_TOKEN = 'SET-TOKEN';
 
 export type UserDataType = {
     avatar?: string
@@ -22,10 +23,26 @@ export type UserDataType = {
     _id: string
 }
 
-export type ProfileInitialStateType = typeof ProfileInitialState
+export type ProfileInitialStateType = {
+    profile: UserDataType
+}
 
-const ProfileInitialState = {
-    profile: {} as UserDataType,
+export const ProfileInitialState = {
+    profile: {
+        avatar: '',
+        created: new Date(),
+        email: '',
+        isAdmin: false,
+        name: '',
+        publicCardPacksCount: 0,
+        rememberMe: false,
+        token: '',
+        tokenDeathTime: 0,
+        updated: new Date(),
+        verified: false,
+        __v: 0,
+        _id: ''
+    }
 }
 
 export const profileReducer = (state: ProfileInitialStateType = ProfileInitialState, action: ProfileActionsType): ProfileInitialStateType => {
@@ -33,7 +50,7 @@ export const profileReducer = (state: ProfileInitialStateType = ProfileInitialSt
         case SET_PROFILE_DATA:
             return {
                 ...state,
-                profile:{...action.user}
+                profile: {...action.user}
             }
         case NEW_PROFILE_NAME:
             return {
@@ -42,12 +59,10 @@ export const profileReducer = (state: ProfileInitialStateType = ProfileInitialSt
                     ...state.profile, name: action.name
                 }
             }
-        case NEW_PROFILE_AVATAR:
+        case SET_TOKEN:
             return {
                 ...state,
-                profile: {
-                    ...state.profile, avatar: action.avatar
-                }
+                profile: {...state.profile, token: action.token}
             }
         default:
             return state;
@@ -56,62 +71,27 @@ export const profileReducer = (state: ProfileInitialStateType = ProfileInitialSt
 
 export const setProfileData = (user: UserDataType) => ({type: SET_PROFILE_DATA, user} as const)
 export const setProfileName = (name: string) => ({type: NEW_PROFILE_NAME, name} as const)
-export const setProfileAvatar = (avatar: string | undefined) => ({type: NEW_PROFILE_AVATAR, avatar} as const)
-
-export const authMe = () => (dispatch: Dispatch) => {
-    dispatch(setAppStatus('loading'))
-    authAPI.authMe()
-        .then(res => {
-            dispatch(setAppIsAuth(true));
-        })
-        .catch((e) => {
-            dispatch(setAppError(e.response
-                ? e.response.data.error
-                : (e.message + ', more details in the console')
-            ))
-            dispatch(setAppIsAuth(false))
-        })
-}
+export const setToken = (token: string) => ({type: SET_TOKEN, token} as const)
 
 export const changeProfile = (name?: string, avatar?: undefined | string) => (dispatch: Dispatch) => {
     dispatch(setAppStatus('loading'))
     authAPI.updateProfile(name, avatar)
         .then(res => {
             dispatch(setProfileName(res.data.updatedUser.name))
-            dispatch(setProfileAvatar(res.data.updatedUser.avatar))
-            // dispatch(getAuthUserData)
+            dispatch(setAppStatus('succeed'))
         })
         .catch(e => {
             dispatch(setAppError(e.response
                 ? e.response.data.error
                 : (e.message + ', more details in the console')
             ))
+            dispatch(setAppStatus('failed'))
         })
 }
-// export const changeAvatarProfileTC = (avatar?: string) => {
-//     return (dispatch: Dispatch) => {
-//         dispatch(setAppStatus('loading'))
-//         profileAPI.changeAvatarProfile(avatar)
-//             .then(res => {
-//                 dispatch(setNewAvatarProfileAC(res.data.updatedUser.avatar))
-//             })
-//             .catch((e) => {
-//                 dispatch(setErrorProfileAC(e.response
-//                     ? e.response.data.error
-//                     : (e.message + ', more details in the console')
-//                 ))
-//             })
-//             .finally(() => {
-//                     dispatch(setAppStatus('succeed'))
-//                 }
-//             )
-//     }
-// }
-
 
 export type ProfileActionsType =
     | ReturnType<typeof setProfileData>
     | ReturnType<typeof setProfileName>
-    | ReturnType<typeof setProfileAvatar>
+    | ReturnType<typeof setToken>
 
 export default profileReducer;
