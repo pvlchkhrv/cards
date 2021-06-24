@@ -10,6 +10,7 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import SortButtons from "./SortButtons";
 import Modal from "../modals/Modal";
 import DeleteModalContainer from "../modals/DeleteModalContainer";
+import EditModalContainer from "../modals/EditModalContainer";
 
 interface TableProps {
     show: boolean
@@ -18,7 +19,7 @@ interface TableProps {
     cardsObj: AuthInitialStateType
     appStatus: RequestStatusType
     onDeleteClickHandler: (cardPackId: string) => void
-    onUpdateClickHandler: (id: string) => void
+    onUpdateClickHandler: (id: string, question: string, answer: string) => void
     sortUpClick: () => void
     sortDownClick: () => void
 }
@@ -77,11 +78,22 @@ export const TableData = (
                                 <TableCell align="center">{card.updated}</TableCell>
                                 <TableCell align="center">{card.rating}</TableCell>
                                 <TableCell align="center">
-                                    <Button disabled={disable} variant={'contained'} color={'primary'}
-                                            size={'medium'}
-                                            onClick={() => onUpdateClickHandler(card._id)}>EDIT</Button>
+                                    {/*<Button disabled={disable} variant={'contained'} color={'primary'}*/}
+                                    {/*        size={'medium'}*/}
+                                    {/*        onClick={() => onUpdateClickHandler(card._id)}>EDIT</Button>*/}
+                                    <EditModalContainer
+                                        cardID={card._id}
+                                        disable={disable}
+                                        onUpdateClickHandler={onUpdateClickHandler}
+                                        questionProps={card.question}
+                                        answerProps={card.answer}
+                                    />
 
-                                    <DeleteModalContainer card_ID={card._id} disable={disable} onDeleteClickHandler={onDeleteClickHandler}/>
+                                    <DeleteModalContainer
+                                        card_ID={card._id}
+                                        disable={disable}
+                                        onDeleteClickHandler={onDeleteClickHandler}
+                                    />
                                     {/*<Button disabled={disable} variant={'contained'} color={'secondary'}*/}
                                     {/*        size={'medium'}*/}
                                     {/*        onClick={()=>modalShow(true)*/}

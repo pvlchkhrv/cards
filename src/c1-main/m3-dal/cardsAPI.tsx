@@ -19,7 +19,7 @@ export const cardsAPI = {
     createCard(packId:string,question:string) {
         return instance.post(`cards/card`, {card: {cardsPack_id: packId,question:question}})
     },
-    updateCard(cardId: string) {
-        return instance.put(`cards/card`, {card: {_id: cardId}})
+    updateCard(cardId: string,question:string,answer:string) {
+        return instance.put(`cards/card`, {card: {_id: cardId,question,answer}})
     }
 }

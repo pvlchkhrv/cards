@@ -162,10 +162,10 @@ export const createCardThunk = (packId: string,question:string) => async (dispat
     }
 }
 
-export const updateCardThunk = (cardId: string, packId: string) => async (dispatch: any) => {
+export const updateCardThunk = (cardId: string, packId: string,question:string,answer:string) => async (dispatch: any) => {
     dispatch(setAppStatus('loading'));
     try {
-        let response = await cardsAPI.updateCard(cardId);
+        let response = await cardsAPI.updateCard(cardId,question,answer);
         dispatch(getCardsThunk(packId))
         dispatch(setAppStatus('succeed'));
         console.log(response.data)

@@ -48,8 +48,8 @@ const CardsPageContainer = () => {
     const onCreateClickHandler = (question:string) => {
         dispatch(createCardThunk(cardPackID,question));
     };
-    const onUpdateClickHandler = (id: string) => {
-        dispatch(updateCardThunk(id, cardPackID));
+    const onUpdateClickHandler = (id: string,question:string,answer:string) => {
+        dispatch(updateCardThunk(id, cardPackID,question,answer));
     };
     const searchClick = () => {
         dispatch(setQuestion(value))

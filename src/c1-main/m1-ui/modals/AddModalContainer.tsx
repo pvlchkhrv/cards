@@ -38,10 +38,11 @@ const AddModalContainer = ({
                 <div className={s.main}>
                     <span>ADD MODAL</span>
                     <div className={s.container}>
+                        <div className={s.textField}>
                         <TextField value={value} onChange={onChangeInput} label="Question" type="text"
                                    variant={'outlined'}
                                    size={'small'}/>
-                        {/*<input value={value} onChange={onChangeInput} type="text"/>*/}
+                        </div>
                         <div className={s.groupBtn}>
                             <div>
                                 <Button
