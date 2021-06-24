@@ -1,0 +1,21 @@
+.main {
+    margin-top: 10px;
+    text-align: center;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+.textField{
+    margin-top: 10px;
+}
+.groupBtn {
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-top: 15px;
+}
